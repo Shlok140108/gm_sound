@@ -126,3 +126,7 @@ JAZZMIN_SETTINGS = {
         }
     ],
 }
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-c620.up.railway.app',
+    'https://gm-sound.com',
+]
