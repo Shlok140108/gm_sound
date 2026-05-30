@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{% if site_settings %}{{ site_settings.site_name }}{% else %}GM SOUND{% endif %}{% endblock %}</title>
+  <meta name="description" content="{% if site_settings %}{{ site_settings.meta_description }}{% endif %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#E8460A',
+            accentLight: '#FFF0EB',
+            cream: '#FAF8F5',
+            charcoal: '#1A1A1A',
+            stone: '#6B6560',
+            pebble: '#E8E4DF',
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #FAF8F5; color: #1A1A1A; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+    .reveal-left.revealed { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+    .reveal-right.revealed { opacity: 1; transform: translateX(0); }
+    .reveal-scale { opacity: 0; transform: scale(0.93); transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1); }
+    .reveal-scale.revealed { opacity: 1; transform: scale(1); }
+
+    /* STAGGER CHILDREN */
+    .stagger > * { opacity: 0; transform: translateY(28px); transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1); }
+    .stagger.revealed > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0ms; }
+    .stagger.revealed > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:80ms; }
+    .stagger.revealed > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:160ms; }
+    .stagger.revealed > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:240ms; }
+    .stagger.revealed > *:nth-child(5) { opacity:1; transform:translateY(0); transition-delay:320ms; }
+    .stagger.revealed > *:nth-child(6) { opacity:1; transform:translateY(0); transition-delay:400ms; }
+
+    /* NAV */
+    .nav-scrolled { box-shadow: 0 1px 24px rgba(0,0,0,0.07); }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px; background:#E8460A; transition:width 0.3s ease; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+    /* HERO SLIDER */
+    .hero-slide { display:none; }
+    .hero-slide.active { display:block; }
+
+    /* CARD HOVER */
+    .card-lift { transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease; }
+    .card-lift:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,0.10); }
+
+    /* FORM */
+    .field-input {
+      width:100%; background:#fff; border:1px solid #E8E4DF; color:#1A1A1A;
+      padding:13px 16px; border-radius:10px; outline:none;
+      transition:border-color 0.2s, box-shadow 0.2s;
+      font-family:'Inter',sans-serif; font-size:14px;
+    }
+    .field-input:focus { border-color:#E8460A; box-shadow:0 0 0 3px rgba(232,70,10,0.08); }
+    .field-input::placeholder { color:#B0ABA5; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:#FAF8F5; }
+    ::-webkit-scrollbar-thumb { background:#E8460A; border-radius:3px; }
+
+    /* MOBILE MENU */
+    #mobile-menu { display:none; }
+    #mobile-menu.open { display:block; }
+
+    /* PARALLAX HEADER */
+    .page-hero { position:relative; overflow:hidden; }
+    .page-hero-bg { position:absolute; inset:0; transform:translateY(0); will-change:transform; }
+
+    /* LINE ACCENT */
+    .line-accent { display:inline-flex; align-items:center; gap:10px; }
+    .line-accent::before { content:''; display:block; width:32px; height:2px; background:#E8460A; border-radius:2px; }
+
+    /* COUNTER ANIMATE */
+    .count-up { display:inline-block; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-charcoal text-white/70 text-xs py-2 px-4">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+    <div class="flex items-center gap-5">
+      {% if site_settings and site_settings.phone_primary %}
+      <a href="tel:{{ site_settings.phone_primary }}" class="flex items-center gap-1.5 hover:text-white transition-colors">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+        {{ site_settings.phone_primary }}
+      </a>
+      {% endif %}
+      {% if site_settings and site_settings.email %}
+      <a href="mailto:{{ site_settings.email }}" class="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+        {{ site_settings.email }}
+      </a>
+      {% endif %}
+    </div>
+    <div class="flex items-center gap-4 text-white/50">
+      {% if site_settings and site_settings.facebook_url %}<a href="{{ site_settings.facebook_url }}" target="_blank" class="hover:text-white transition-colors font-medium">fb</a>{% endif %}
+      {% if site_settings and site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" target="_blank" class="hover:text-white transition-colors font-medium">ig</a>{% endif %}
+      {% if site_settings and site_settings.youtube_url %}<a href="{{ site_settings.youtube_url }}" target="_blank" class="hover:text-white transition-colors font-medium">yt</a>{% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="sticky top-0 z-50 bg-cream/95 backdrop-blur-md border-b border-pebble transition-shadow duration-300">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <a href="{% url 'home' %}" class="flex items-center gap-3">
+      {% if site_settings and site_settings.logo %}
+        <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}" class="h-9">
+      {% else %}
+        <span class="font-display text-xl font-bold text-charcoal">SB <span class="text-accent">PRO‑AUDIO</span></span>
+      {% endif %}
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="{% url 'home' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'home' %}active !text-charcoal{% endif %}">Home</a>
+      <a href="{% url 'about' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'about' %}active !text-charcoal{% endif %}">About</a>
+      <a href="{% url 'services' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'services' %}active !text-charcoal{% endif %}">Services</a>
+      <a href="{% url 'products' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'products' %}active !text-charcoal{% endif %}">Products</a>
+      <a href="{% url 'testimonials' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'testimonials' %}active !text-charcoal{% endif %}">Testimonials</a>
+    </div>
+
+    <div class="hidden md:flex items-center gap-3">
+      <a href="{% url 'contact' %}" class="bg-accent hover:bg-orange-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors">Get Quote</a>
+    </div>
+
+    <button id="hamburger" class="md:hidden text-stone hover:text-charcoal p-1">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="md:hidden border-t border-pebble bg-cream px-4 pb-5">
+    <div class="flex flex-col gap-1 pt-3">
+      <a href="{% url 'home' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Home <span class="text-pebble">›</span></a>
+      <a href="{% url 'about' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">About <span class="text-pebble">›</span></a>
+      <a href="{% url 'services' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Services <span class="text-pebble">›</span></a>
+      <a href="{% url 'products' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Products <span class="text-pebble">›</span></a>
+      <a href="{% url 'testimonials' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Testimonials <span class="text-pebble">›</span></a>
+      <a href="{% url 'contact' %}" class="mt-3 bg-accent text-white text-sm font-semibold px-5 py-3 rounded-full text-center">Get Quote</a>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}
+<div class="max-w-7xl mx-auto px-4 pt-4">
+  {% for message in messages %}
+  <div class="flex items-center gap-3 p-4 rounded-xl mb-2
+    {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-700
+    {% elif message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700
+    {% else %}bg-blue-50 border border-blue-200 text-blue-700{% endif %}">
+    <span class="text-sm">{{ message }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<!-- FOOTER -->
+<footer class="bg-charcoal text-white/60 mt-24">
+  <div class="max-w-7xl mx-auto px-4 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div class="md:col-span-2">
+        <span class="font-display text-2xl font-bold text-white">SB <span class="text-accent">PRO-AUDIO</span></span>
+        <p class="text-sm mt-4 leading-relaxed max-w-sm">
+          {% if site_settings and site_settings.tagline %}{{ site_settings.tagline }}{% else %}Leading sound system manufacturing company delivering high-performance professional audio solutions.{% endif %}
+        </p>
+        {% if site_settings %}
+        <div class="mt-5 space-y-1.5 text-sm">
+          {% if site_settings.phone_primary %}<div><a href="tel:{{ site_settings.phone_primary }}" class="hover:text-accent transition-colors">{{ site_settings.phone_primary }}</a>{% if site_settings.phone_secondary %} &nbsp;·&nbsp; <a href="tel:{{ site_settings.phone_secondary }}" class="hover:text-accent transition-colors">{{ site_settings.phone_secondary }}</a>{% endif %}</div>{% endif %}
+          {% if site_settings.email %}<div><a href="mailto:{{ site_settings.email }}" class="hover:text-accent transition-colors">{{ site_settings.email }}</a></div>{% endif %}
+        </div>
+        {% endif %}
+        <div class="flex gap-3 mt-6">
+          {% if site_settings and site_settings.facebook_url %}<a href="{{ site_settings.facebook_url }}" target="_blank" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs hover:bg-accent hover:border-accent hover:text-white transition-all">f</a>{% endif %}
+          {% if site_settings and site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" target="_blank" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs hover:bg-accent hover:border-accent hover:text-white transition-all">in</a>{% endif %}
+          {% if site_settings and site_settings.youtube_url %}<a href="{{ site_settings.youtube_url }}" target="_blank" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs hover:bg-accent hover:border-accent hover:text-white transition-all">▶</a>{% endif %}
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-5 uppercase tracking-widest">Quick Links</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a></li>
+          <li><a href="{% url 'about' %}" class="hover:text-accent transition-colors">About Us</a></li>
+          <li><a href="{% url 'services' %}" class="hover:text-accent transition-colors">Services</a></li>
+          <li><a href="{% url 'products' %}" class="hover:text-accent transition-colors">Products</a></li>
+          <li><a href="{% url 'testimonials' %}" class="hover:text-accent transition-colors">Testimonials</a></li>
+          <li><a href="{% url 'contact' %}" class="hover:text-accent transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-5 uppercase tracking-widest">Hours</h4>
+        <ul class="space-y-2 text-sm">
+          <li>Mon – Fri: 9:00 AM – 7:00 PM</li>
+          <li>Saturday: 10:00 AM – 5:00 PM</li>
+          <li>Sunday: Closed</li>
+        </ul>
+        {% if site_settings and site_settings.address %}
+        <div class="mt-6 text-sm">
+          <p class="text-white text-xs font-semibold uppercase tracking-widest mb-2">Address</p>
+          <p class="leading-relaxed">{{ site_settings.address }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
+      <span>&copy; {% now "Y" %} GM SOUND. All rights reserved.</span>
+      <span>Professional Audio Systems · India</span>
+    </div>
+  </div>
+</footer>
+
+{% if site_settings and site_settings.whatsapp_number %}
+<a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank"
+   class="fixed bottom-6 right-6 z-50 w-13 h-13 bg-green-500 hover:bg-green-400 rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110 w-14 h-14">
+  <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+{% endif %}
+
+<script>
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  });
+
+  // Nav shadow on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('nav-scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // Hero slider
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  let current = 0;
+  function showSlide(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => { d.classList.remove('bg-accent','scale-125'); d.classList.add('bg-charcoal/20'); });
+    current = (n + slides.length) % slides.length;
+    if (slides[current]) slides[current].classList.add('active');
+    if (dots[current]) { dots[current].classList.add('bg-accent','scale-125'); dots[current].classList.remove('bg-charcoal/20'); }
+  }
+  if (slides.length > 0) {
+    showSlide(0);
+    const autoplay = setInterval(() => showSlide(current + 1), 5500);
+    document.getElementById('hero-prev')?.addEventListener('click', () => { clearInterval(autoplay); showSlide(current - 1); });
+    document.getElementById('hero-next')?.addEventListener('click', () => { clearInterval(autoplay); showSlide(current + 1); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { clearInterval(autoplay); showSlide(i); }));
+  }
+
+  // Scroll reveal (IntersectionObserver)
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('revealed'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Count-up animation
+  function animateCount(el, target, duration=1600) {
+    let start = 0, step = target / (duration / 16);
+    const tick = () => {
+      start = Math.min(start + step, target);
+      el.textContent = Math.floor(start) + (el.dataset.suffix || '');
+      if (start < target) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        animateCount(el, parseInt(el.dataset.target), 1600);
+        countObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.count-up').forEach(el => countObs.observe(el));
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

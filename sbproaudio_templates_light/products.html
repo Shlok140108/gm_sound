@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+{% block title %}Products | GM SOUND{% endblock %}
+
+{% block content %}
+
+<div class="bg-charcoal py-24 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 60% 40%, #E8460A, transparent 55%)"></div>
+  <div class="max-w-7xl mx-auto px-4 relative z-10">
+    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">Our Range</span>
+    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">Products</h1>
+    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+      <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
+      <span>/</span><span class="text-white/70">Products</span>
+    </div>
+  </div>
+</div>
+
+<section class="max-w-7xl mx-auto px-4 py-16">
+  <!-- Category Filter -->
+  {% if categories %}
+  <div class="flex flex-wrap gap-3 mb-14 reveal">
+    <a href="{% url 'products' %}"
+       class="px-5 py-2.5 rounded-full text-sm font-medium transition-all {% if not active_category %}bg-accent text-white shadow-lg{% else %}bg-white border border-pebble text-stone hover:border-accent hover:text-accent{% endif %}">
+      All Products
+    </a>
+    {% for cat in categories %}
+    <a href="{% url 'products' %}?category={{ cat.slug }}"
+       class="px-5 py-2.5 rounded-full text-sm font-medium transition-all {% if active_category.slug == cat.slug %}bg-accent text-white shadow-lg{% else %}bg-white border border-pebble text-stone hover:border-accent hover:text-accent{% endif %}">
+      {{ cat.name }}
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if products %}
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 stagger">
+    {% for product in products %}
+    <div class="group bg-white border border-pebble rounded-2xl overflow-hidden card-lift hover:border-accent/30 transition-all">
+      <div class="h-52 overflow-hidden bg-cream">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        {% else %}
+        <div class="w-full h-full flex items-center justify-center">
+          <svg class="w-14 h-14 text-pebble opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+        </div>
+        {% endif %}
+      </div>
+      <div class="p-5">
+        {% if product.category %}<span class="text-xs text-accent font-semibold uppercase tracking-widest">{{ product.category.name }}</span>{% endif %}
+        <h3 class="text-charcoal font-semibold mt-1 mb-2 group-hover:text-accent transition-colors text-sm">{{ product.name }}</h3>
+        {% if product.short_description %}<p class="text-stone text-xs leading-relaxed">{{ product.short_description|truncatewords:18 }}</p>{% endif %}
+        <a href="{% url 'contact' %}" class="inline-flex items-center gap-1 mt-4 text-xs text-accent font-semibold hover:gap-2 transition-all">Enquire Now →</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-24 text-stone reveal">
+    <svg class="w-16 h-16 mx-auto mb-5 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+    <p>No products found{% if active_category %} in <strong>{{ active_category.name }}</strong>{% endif %}.</p>
+    {% if active_category %}<a href="{% url 'products' %}" class="text-accent text-sm mt-3 inline-block hover:underline">View all products</a>{% endif %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

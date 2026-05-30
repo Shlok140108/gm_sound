@@ -1,0 +1,852 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{% if site_settings %}{{ site_settings.site_name }}{% else %}GM SOUND{% endif %}{% endblock %}</title>
+  <meta name="description" content="{% if site_settings %}{{ site_settings.meta_description }}{% endif %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#E8460A',
+            accentLight: '#FFF0EB',
+            cream: '#FAF8F5',
+            charcoal: '#1A1A1A',
+            stone: '#6B6560',
+            pebble: '#E8E4DF',
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #FAF8F5; color: #1A1A1A; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+    .reveal-left.revealed { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+    .reveal-right.revealed { opacity: 1; transform: translateX(0); }
+    .reveal-scale { opacity: 0; transform: scale(0.93); transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1); }
+    .reveal-scale.revealed { opacity: 1; transform: scale(1); }
+
+    /* STAGGER CHILDREN */
+    .stagger > * { opacity: 0; transform: translateY(28px); transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1); }
+    .stagger.revealed > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0ms; }
+    .stagger.revealed > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:80ms; }
+    .stagger.revealed > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:160ms; }
+    .stagger.revealed > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:240ms; }
+    .stagger.revealed > *:nth-child(5) { opacity:1; transform:translateY(0); transition-delay:320ms; }
+    .stagger.revealed > *:nth-child(6) { opacity:1; transform:translateY(0); transition-delay:400ms; }
+
+    /* NAV */
+    .nav-scrolled { box-shadow: 0 1px 24px rgba(0,0,0,0.07); }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px; background:#E8460A; transition:width 0.3s ease; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+    /* HERO SLIDER */
+    .hero-slide { display:none; }
+    .hero-slide.active { display:block; }
+
+    /* CARD HOVER */
+    .card-lift { transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease; }
+    .card-lift:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,0.10); }
+
+    /* FORM */
+    .field-input {
+      width:100%; background:#fff; border:1px solid #E8E4DF; color:#1A1A1A;
+      padding:13px 16px; border-radius:10px; outline:none;
+      transition:border-color 0.2s, box-shadow 0.2s;
+      font-family:'Inter',sans-serif; font-size:14px;
+    }
+    .field-input:focus { border-color:#E8460A; box-shadow:0 0 0 3px rgba(232,70,10,0.08); }
+    .field-input::placeholder { color:#B0ABA5; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:#FAF8F5; }
+    ::-webkit-scrollbar-thumb { background:#E8460A; border-radius:3px; }
+
+    /* MOBILE MENU */
+    #mobile-menu { display:none; }
+    #mobile-menu.open { display:block; }
+
+    /* PARALLAX HEADER */
+    .page-hero { position:relative; overflow:hidden; }
+    .page-hero-bg { position:absolute; inset:0; transform:translateY(0); will-change:transform; }
+
+    /* LINE ACCENT */
+    .line-accent { display:inline-flex; align-items:center; gap:10px; }
+    .line-accent::before { content:''; display:block; width:32px; height:2px; background:#E8460A; border-radius:2px; }
+
+    /* COUNTER ANIMATE */
+    .count-up { display:inline-block; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-charcoal text-white/70 text-xs py-2 px-4">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+    <div class="flex items-center gap-5">
+      {% if site_settings and site_settings.phone_primary %}
+      <a href="tel:{{ site_settings.phone_primary }}" class="flex items-center gap-1.5 hover:text-white transition-colors">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+        {{ site_settings.phone_primary }}
+      </a>
+      {% endif %}
+      {% if site_settings and site_settings.email %}
+      <a href="mailto:{{ site_settings.email }}" class="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+        {{ site_settings.email }}
+      </a>
+      {% endif %}
+    </div>
+    <div class="flex items-center gap-4 text-white/50">
+      {% if site_settings and site_settings.facebook_url %}<a href="{{ site_settings.facebook_url }}" target="_blank" class="hover:text-white transition-colors font-medium">fb</a>{% endif %}
+      {% if site_settings and site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" target="_blank" class="hover:text-white transition-colors font-medium">ig</a>{% endif %}
+      {% if site_settings and site_settings.youtube_url %}<a href="{{ site_settings.youtube_url }}" target="_blank" class="hover:text-white transition-colors font-medium">yt</a>{% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="sticky top-0 z-50 bg-cream/95 backdrop-blur-md border-b border-pebble transition-shadow duration-300">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <a href="{% url 'home' %}" class="flex items-center gap-3">
+      {% if site_settings and site_settings.logo %}
+        <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}" class="h-9">
+      {% else %}
+        <span class="font-display text-xl font-bold text-charcoal">GM <span class="text-accent">SOUND</span></span>
+      {% endif %}
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="{% url 'home' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'home' %}active !text-charcoal{% endif %}">Home</a>
+      <a href="{% url 'about' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'about' %}active !text-charcoal{% endif %}">About</a>
+      <a href="{% url 'services' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'services' %}active !text-charcoal{% endif %}">Services</a>
+      <a href="{% url 'products' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'products' %}active !text-charcoal{% endif %}">Products</a>
+      <a href="{% url 'testimonials' %}" class="nav-link text-sm font-medium text-stone hover:text-charcoal transition-colors {% if request.resolver_match.url_name == 'testimonials' %}active !text-charcoal{% endif %}">Testimonials</a>
+    </div>
+
+    <div class="hidden md:flex items-center gap-3">
+      <a href="{% url 'contact' %}" class="bg-accent hover:bg-orange-600 text-white text-sm font-medium px-5 py-2 rounded-full transition-colors">Get Quote</a>
+    </div>
+
+    <button id="hamburger" class="md:hidden text-stone hover:text-charcoal p-1">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="md:hidden border-t border-pebble bg-cream px-4 pb-5">
+    <div class="flex flex-col gap-1 pt-3">
+      <a href="{% url 'home' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Home <span class="text-pebble">›</span></a>
+      <a href="{% url 'about' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">About <span class="text-pebble">›</span></a>
+      <a href="{% url 'services' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Services <span class="text-pebble">›</span></a>
+      <a href="{% url 'products' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Products <span class="text-pebble">›</span></a>
+      <a href="{% url 'testimonials' %}" class="text-sm text-stone hover:text-accent py-2.5 border-b border-pebble flex items-center justify-between">Testimonials <span class="text-pebble">›</span></a>
+      <a href="{% url 'contact' %}" class="mt-3 bg-accent text-white text-sm font-semibold px-5 py-3 rounded-full text-center">Get Quote</a>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}
+<div class="max-w-7xl mx-auto px-4 pt-4">
+  {% for message in messages %}
+  <div class="flex items-center gap-3 p-4 rounded-xl mb-2
+    {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-700
+    {% elif message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700
+    {% else %}bg-blue-50 border border-blue-200 text-blue-700{% endif %}">
+    <span class="text-sm">{{ message }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<!-- FOOTER -->
+<footer style="background:#111111;font-family:'DM Sans',sans-serif;color:rgba(255,255,255,0.55);overflow:hidden;position:relative;">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
+
+  <style>
+    .footer-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(232,70,10,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,70,10,0.04) 1px,transparent 1px);background-size:48px 48px;animation:gridShift 20s linear infinite;pointer-events:none}
+    @keyframes gridShift{0%{background-position:0 0}100%{background-position:48px 48px}}
+    .footer-scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,70,10,0.6),transparent);animation:scan 6s ease-in-out infinite;pointer-events:none}
+    @keyframes scan{0%{top:-2px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+    .footer-inner{position:relative;max-width:1100px;margin:0 auto;padding:64px 32px 0}
+    .footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.07)}
+    .logo-icon{width:36px;height:36px;border:2px solid #E8460A;border-radius:4px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .logo-icon::after{content:'';position:absolute;bottom:3px;left:3px;right:3px;height:12px;background:repeating-linear-gradient(90deg,#E8460A 0px,#E8460A 2px,transparent 2px,transparent 5px);border-radius:1px;animation:bars 1.8s ease-in-out infinite alternate}
+    @keyframes bars{0%{transform:scaleY(0.4)}100%{transform:scaleY(1)}}
+    .f-contact-row{display:flex;align-items:center;gap:10px;font-size:13px;margin-bottom:10px;transition:color 0.2s;text-decoration:none;color:rgba(255,255,255,0.55)}
+    .f-contact-row:hover{color:#E8460A}
+    .f-contact-icon{width:30px;height:30px;border:1px solid rgba(255,255,255,0.12);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:border-color 0.2s,background 0.2s}
+    .f-contact-row:hover .f-contact-icon{border-color:#E8460A;background:rgba(232,70,10,0.12);color:#E8460A}
+    .f-col-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#E8460A;margin-bottom:20px;position:relative;padding-bottom:10px}
+    .f-col-title::after{content:'';position:absolute;bottom:0;left:0;width:20px;height:1px;background:#E8460A;transition:width 0.4s}
+    .f-col-wrap:hover .f-col-title::after{width:100%}
+    .f-nav-link{display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,0.55);text-decoration:none;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);transition:color 0.2s,padding-left 0.2s;position:relative;overflow:hidden}
+    .f-nav-link::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:#E8460A;transform:scaleY(0);transition:transform 0.2s}
+    .f-nav-link:hover{color:#fff;padding-left:10px}
+    .f-nav-link:hover::before{transform:scaleY(1)}
+    .f-hours-row{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);gap:12px}
+    .f-social-btn{width:36px;height:36px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;transition:all 0.25s;position:relative;overflow:hidden}
+    .f-social-btn::after{content:'';position:absolute;inset:0;background:#E8460A;transform:translateY(100%);transition:transform 0.25s;z-index:0}
+    .f-social-btn:hover{border-color:#E8460A;color:#fff}
+    .f-social-btn:hover::after{transform:translateY(0)}
+    .f-social-btn span{position:relative;z-index:1}
+    .footer-mid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.05)}
+    .f-stat-card{background:#111111;padding:28px 32px;text-align:center;position:relative;overflow:hidden;transition:background 0.3s}
+    .f-stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:#E8460A;transform:scaleX(0);transition:transform 0.4s;transform-origin:left}
+    .f-stat-card:hover{background:rgba(232,70,10,0.04)}
+    .f-stat-card:hover::before{transform:scaleX(1)}
+    .f-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px}
+    .f-stat-num span{color:#E8460A}
+    .f-stat-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+    .f-support-icon{width:32px;height:32px;border-radius:6px;background:rgba(232,70,10,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .f-waveform{display:flex;align-items:center;gap:2px;height:18px;margin-top:16px}
+    .f-waveform-bar{width:3px;background:rgba(232,70,10,0.5);border-radius:2px;animation:fwave 1.2s ease-in-out infinite}
+    @keyframes fwave{0%,100%{transform:scaleY(0.3)}50%{transform:scaleY(1)}}
+    .f-pulse-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;margin-right:6px;animation:fpulse 2s ease-in-out infinite;vertical-align:middle}
+    @keyframes fpulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}50%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+    .f-reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s}
+    .f-reveal.f-visible{opacity:1;transform:translateY(0)}
+    .footer-bottom-bar{display:flex;justify-content:space-between;align-items:center;padding:20px 32px;font-size:12px;color:rgba(255,255,255,0.25)}
+    .footer-bottom-bar a{color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s}
+    .footer-bottom-bar a:hover{color:#E8460A}
+  </style>
+
+  <div class="footer-grid-bg"></div>
+  <div class="footer-scan"></div>
+
+  <div class="footer-inner">
+    <div class="footer-top f-reveal" id="fr1">
+
+      <!-- Brand Column -->
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;color:#fff;letter-spacing:1px;display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div class="logo-icon"></div>
+          GM <span style="color:#E8460A;">&nbsp;SOUND</span>
+        </div>
+        <p style="font-size:13px;line-height:1.7;max-width:240px;margin-bottom:24px;">
+          {% if site_settings and site_settings.tagline %}{{ site_settings.tagline }}{% else %}Leading sound system manufacturing company delivering high-performance professional audio solutions.{% endif %}
+        </p>
+
+        {% if site_settings %}
+          {% if site_settings.phone_primary %}
+          <a href="tel:{{ site_settings.phone_primary }}" class="f-contact-row">
+            <div class="f-contact-icon"><i class="ti ti-phone"></i></div>
+            {{ site_settings.phone_primary }}
+          </a>
+          {% endif %}
+          {% if site_settings.phone_secondary %}
+          <a href="tel:{{ site_settings.phone_secondary }}" class="f-contact-row">
+            <div class="f-contact-icon"><i class="ti ti-phone"></i></div>
+            {{ site_settings.phone_secondary }}
+          </a>
+          {% endif %}
+          {% if site_settings.email %}
+          <a href="mailto:{{ site_settings.email }}" class="f-contact-row">
+            <div class="f-contact-icon"><i class="ti ti-mail"></i></div>
+            {{ site_settings.email }}
+          </a>
+          {% endif %}
+          {% if site_settings.address %}
+          <div class="f-contact-row">
+            <div class="f-contact-icon"><i class="ti ti-map-pin"></i></div>
+            {{ site_settings.address }}
+          </div>
+          {% endif %}
+        {% endif %}
+
+        <div class="f-waveform" aria-hidden="true">
+          <div class="f-waveform-bar" style="height:60%;animation-delay:0s"></div>
+          <div class="f-waveform-bar" style="height:100%;animation-delay:0.1s"></div>
+          <div class="f-waveform-bar" style="height:40%;animation-delay:0.2s"></div>
+          <div class="f-waveform-bar" style="height:80%;animation-delay:0.3s"></div>
+          <div class="f-waveform-bar" style="height:60%;animation-delay:0.4s"></div>
+          <div class="f-waveform-bar" style="height:100%;animation-delay:0.5s"></div>
+          <div class="f-waveform-bar" style="height:50%;animation-delay:0.6s"></div>
+          <div class="f-waveform-bar" style="height:70%;animation-delay:0.7s"></div>
+          <div class="f-waveform-bar" style="height:40%;animation-delay:0.8s"></div>
+          <div class="f-waveform-bar" style="height:90%;animation-delay:0.9s"></div>
+          <div class="f-waveform-bar" style="height:60%;animation-delay:1.0s"></div>
+          <div class="f-waveform-bar" style="height:80%;animation-delay:1.1s"></div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="f-col-wrap f-reveal" id="fr2" style="transition-delay:0.1s">
+        <div class="f-col-title">Quick Links</div>
+        <a href="{% url 'home' %}" class="f-nav-link">Home</a>
+        <a href="{% url 'about' %}" class="f-nav-link">About Us</a>
+        <a href="{% url 'services' %}" class="f-nav-link">Services</a>
+        <a href="{% url 'products' %}" class="f-nav-link">Products</a>
+        <a href="{% url 'testimonials' %}" class="f-nav-link">Testimonials</a>
+        <a href="{% url 'contact' %}" class="f-nav-link">Contact</a>
+
+        <div style="display:flex;gap:10px;margin-top:28px;">
+          {% if site_settings and site_settings.facebook_url %}
+          <a href="{{ site_settings.facebook_url }}" target="_blank" class="f-social-btn" aria-label="Facebook"><span>f</span></a>
+          {% endif %}
+          {% if site_settings and site_settings.instagram_url %}
+          <a href="{{ site_settings.instagram_url }}" target="_blank" class="f-social-btn" aria-label="Instagram"><span><i class="ti ti-brand-instagram"></i></span></a>
+          {% endif %}
+          {% if site_settings and site_settings.youtube_url %}
+          <a href="{{ site_settings.youtube_url }}" target="_blank" class="f-social-btn" aria-label="YouTube"><span>▶</span></a>
+          {% endif %}
+          {% if site_settings and site_settings.whatsapp_number %}
+          <a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank" class="f-social-btn" aria-label="WhatsApp"><span><i class="ti ti-brand-whatsapp"></i></span></a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Office Hours -->
+      <div class="f-col-wrap f-reveal" id="fr3" style="transition-delay:0.2s">
+        <div class="f-col-title">Office Hours</div>
+        <div class="f-hours-row">
+          <span style="color:rgba(255,255,255,0.4);font-size:12px;">Mon – Fri</span>
+          <span style="color:rgba(255,255,255,0.75);font-size:12px;">9:00 AM – 7:00 PM</span>
+        </div>
+        <div class="f-hours-row">
+          <span style="color:rgba(255,255,255,0.4);font-size:12px;">Saturday</span>
+          <span style="color:rgba(255,255,255,0.75);font-size:12px;">10:00 AM – 5:00 PM</span>
+        </div>
+        <div class="f-hours-row" style="border-bottom:none;">
+          <span style="color:rgba(255,255,255,0.4);font-size:12px;">Sunday</span>
+          <span style="background:rgba(232,70,10,0.15);color:#E8460A;font-size:10px;font-weight:600;letter-spacing:1px;padding:2px 8px;border-radius:3px;text-transform:uppercase;">Closed</span>
+        </div>
+        <div style="margin-top:20px;padding:14px;border:1px solid rgba(232,70,10,0.2);border-radius:8px;background:rgba(232,70,10,0.05);">
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Current Status</div>
+          <div style="font-size:13px;color:#fff;display:flex;align-items:center;">
+            <span class="f-pulse-dot"></span> Open Now
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Support -->
+      <div class="f-col-wrap f-reveal" id="fr4" style="transition-delay:0.3s">
+        <div class="f-col-title">Quick Support</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div class="f-support-icon"><i class="ti ti-headset" style="color:#E8460A;font-size:15px;"></i></div>
+          <div>
+            <div style="font-size:12px;color:#fff;font-weight:500;">24/7 Support</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);">Always available</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div class="f-support-icon"><i class="ti ti-truck-delivery" style="color:#E8460A;font-size:15px;"></i></div>
+          <div>
+            <div style="font-size:12px;color:#fff;font-weight:500;">Pan India Delivery</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);">All major cities</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div class="f-support-icon"><i class="ti ti-tool" style="color:#E8460A;font-size:15px;"></i></div>
+          <div>
+            <div style="font-size:12px;color:#fff;font-weight:500;">Installation & Setup</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);">Expert technicians</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;">
+          <div class="f-support-icon"><i class="ti ti-shield-check" style="color:#E8460A;font-size:15px;"></i></div>
+          <div>
+            <div style="font-size:12px;color:#fff;font-weight:500;">Warranty Assured</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);">On all products</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="footer-mid f-reveal" id="fr5" style="transition-delay:0.4s">
+    <div class="f-stat-card">
+      <div class="f-stat-num" id="fstat1">0<span>+</span></div>
+      <div class="f-stat-label">Happy Clients</div>
+    </div>
+    <div class="f-stat-card">
+      <div class="f-stat-num" id="fstat2">0<span>+</span></div>
+      <div class="f-stat-label">Products Sold</div>
+    </div>
+    <div class="f-stat-card">
+      <div class="f-stat-num" id="fstat3">0</div>
+      <div class="f-stat-label">Years of Excellence</div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom-bar">
+    <span>© 2025 GM SOUND. All rights reserved.</span>
+    <div style="display:flex;gap:20px;">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var revEls = document.querySelectorAll('.f-reveal');
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('f-visible'); });
+      }, { threshold: 0.1 });
+      revEls.forEach(function(el){ obs.observe(el); });
+
+      function animCount(el, target, duration){
+        var start = 0;
+        var hasSuffix = el.innerHTML.includes('+');
+        var step = target / (duration / 16);
+        var timer = setInterval(function(){
+          start = Math.min(start + step, target);
+          el.innerHTML = Math.round(start) + (hasSuffix ? '<span>+</span>' : '');
+          if(start >= target) clearInterval(timer);
+        }, 16);
+      }
+
+      var statsObs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            animCount(document.getElementById('fstat1'), 200, 1400);
+            animCount(document.getElementById('fstat2'), 500, 1600);
+            animCount(document.getElementById('fstat3'), {% if site_settings %}{{ site_settings.years_of_experience }}{% else %}15{% endif %}, 1200);
+            statsObs.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      var midEl = document.querySelector('.footer-mid');
+      if(midEl) statsObs.observe(midEl);
+
+      setTimeout(function(){
+        revEls.forEach(function(el){ el.classList.add('f-visible'); });
+      }, 100);
+    })();
+  </script>
+</footer>
+
+{% if site_settings and site_settings.whatsapp_number %}
+<a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank"
+   class="fixed bottom-6 right-6 z-50 w-13 h-13 bg-green-500 hover:bg-green-400 rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110 w-14 h-14">
+  <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+{% endif %}
+
+<script>
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  });
+
+  // Nav shadow on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('nav-scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // Hero slider
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  let current = 0;
+  function showSlide(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => { d.classList.remove('bg-accent','scale-125'); d.classList.add('bg-charcoal/20'); });
+    current = (n + slides.length) % slides.length;
+    if (slides[current]) slides[current].classList.add('active');
+    if (dots[current]) { dots[current].classList.add('bg-accent','scale-125'); dots[current].classList.remove('bg-charcoal/20'); }
+  }
+  if (slides.length > 0) {
+    showSlide(0);
+    const autoplay = setInterval(() => showSlide(current + 1), 5500);
+    document.getElementById('hero-prev')?.addEventListener('click', () => { clearInterval(autoplay); showSlide(current - 1); });
+    document.getElementById('hero-next')?.addEventListener('click', () => { clearInterval(autoplay); showSlide(current + 1); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { clearInterval(autoplay); showSlide(i); }));
+  }
+
+  // Scroll reveal (IntersectionObserver)
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('revealed'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Count-up animation
+  function animateCount(el, target, duration=1600) {
+    let start = 0, step = target / (duration / 16);
+    const tick = () => {
+      start = Math.min(start + step, target);
+      el.textContent = Math.floor(start) + (el.dataset.suffix || '');
+      if (start < target) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        animateCount(el, parseInt(el.dataset.target), 1600);
+        countObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.count-up').forEach(el => countObs.observe(el));
+</script>
+{% block extra_js %}{% endblock %}
+
+{% comment %}
+════════════════════════════════════════════════════════════
+  EXPERIENCE TUNNEL OVERLAY
+  Paste this entire block into base.html just ABOVE the
+  closing </body> tag (after the existing <script> block).
+════════════════════════════════════════════════════════════
+{% endcomment %}
+
+{% if experience_video %}
+<!-- ░░ EXPERIENCE OVERLAY ░░ -->
+<div id="exp-overlay" aria-modal="true" role="dialog" aria-label="Experience video" style="display:none;">
+
+  <!-- Tunnel canvas -->
+  <canvas id="exp-tunnel"></canvas>
+
+  <!-- Video container (hidden until tunnel finishes) -->
+  <div id="exp-video-wrap">
+    <button id="exp-close" aria-label="Close video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <div id="exp-title-block">
+      <p id="exp-subtitle">{{ experience_video.subtitle }}</p>
+      <h2 id="exp-title">{{ experience_video.title }}</h2>
+    </div>
+
+    {% if experience_video.video_file %}
+    <video id="exp-video" autoplay loop muted playsinline>
+      <source src="{{ experience_video.video_file.url }}" type="video/mp4">
+    </video>
+    {% elif experience_video.video_url %}
+    <video id="exp-video" autoplay loop muted playsinline>
+      <source src="{{ experience_video.video_url }}" type="video/mp4">
+    </video>
+    {% endif %}
+
+    <div id="exp-vignette"></div>
+  </div>
+</div>
+
+<style>
+/* ── Overlay shell ── */
+#exp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  overflow: hidden;
+}
+
+/* ── Tunnel canvas ── */
+#exp-tunnel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Video wrap ── */
+#exp-video-wrap {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#exp-video-wrap.visible { opacity: 1; }
+
+#exp-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Vignette over video ── */
+#exp-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 30%,
+    rgba(0,0,0,0.55) 70%,
+    rgba(0,0,0,0.9) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Title overlay ── */
+#exp-title-block {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+  white-space: nowrap;
+}
+
+#exp-video-wrap.visible #exp-title-block {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+#exp-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(11px, 1.5vw, 14px);
+  font-weight: 600;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #FF5722;
+  margin: 0 0 8px;
+}
+
+#exp-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 7vw, 90px);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 2px;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 0 0 60px rgba(255,87,34,0.4);
+}
+
+/* ── Close button ── */
+#exp-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.8s, background 0.2s, border-color 0.2s;
+}
+
+#exp-video-wrap.visible #exp-close {
+  opacity: 1;
+}
+
+#exp-close:hover {
+  background: #FF5722;
+  border-color: #FF5722;
+}
+
+#exp-close svg {
+  width: 18px;
+  height: 18px;
+  color: #fff;
+  stroke: #fff;
+}
+</style>
+
+<script>
+(function () {
+
+  // ── Find the Experience button ──────────────────────────────
+  // Targets the hero button whose text contains "Experience"
+  // If your button has a different text, update the selector below.
+  const expBtn = document.getElementById('exp-btn');
+  if (!expBtn) return;
+
+  const overlay    = document.getElementById('exp-overlay');
+  const canvas     = document.getElementById('exp-tunnel');
+  const videoWrap  = document.getElementById('exp-video-wrap');
+  const closeBtn   = document.getElementById('exp-close');
+  const video      = document.getElementById('exp-video');
+  let   animId     = null;
+  let   tunnelDone = false;
+
+  // ── Tunnel animation ─────────────────────────────────────────
+  function runTunnel() {
+    const ctx = canvas.getContext('2d');
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const cx = canvas.width  / 2;
+    const cy = canvas.height / 2;
+    const DURATION = 1800; // ms
+    const start    = performance.now();
+    tunnelDone     = false;
+
+    // Sound-wave ring params
+    const RINGS   = 18;
+    const ORANGE  = '#FF5722';
+    const ORANGE2 = '#E64A19';
+
+    function easeInQuint(t) { return t * t * t * t * t; }
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function draw(now) {
+      const elapsed = now - start;
+      const raw     = Math.min(elapsed / DURATION, 1);
+      const t       = easeOutCubic(raw);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Background — goes from black to a deep dark
+      ctx.fillStyle = `rgb(${Math.round(t * 10)},${Math.round(t * 5)},${Math.round(t * 5)})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const maxR = Math.sqrt(cx * cx + cy * cy) * 1.4;
+
+      // Draw rings — each ring rushes toward viewer
+      for (let i = 0; i < RINGS; i++) {
+        const phase    = i / RINGS;
+        const ringT    = ((t * 1.6 - phase) % 1 + 1) % 1;
+        const radius   = easeInQuint(ringT) * maxR;
+        const alpha    = (1 - ringT) * (0.6 - phase * 0.02);
+        const width    = (1 - ringT) * 3 + 0.5;
+        const wobble   = Math.sin(ringT * Math.PI * 8 + i) * radius * 0.015;
+
+        if (alpha <= 0 || radius <= 0) continue;
+
+        // Main ring
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius + wobble, 0, Math.PI * 2);
+        ctx.strokeStyle = i % 3 === 0 ? ORANGE : ORANGE2;
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth   = width;
+        ctx.stroke();
+
+        // Inner glow ring
+        if (i % 2 === 0) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius * 0.97, 0, Math.PI * 2);
+          ctx.strokeStyle = '#fff';
+          ctx.globalAlpha = alpha * 0.15;
+          ctx.lineWidth   = width * 0.5;
+          ctx.stroke();
+        }
+      }
+
+      // Radiating lines (like a speaker cone)
+      ctx.globalAlpha = t * 0.12;
+      const spokes = 24;
+      for (let s = 0; s < spokes; s++) {
+        const angle = (s / spokes) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(angle) * maxR, cy + Math.sin(angle) * maxR);
+        ctx.strokeStyle = ORANGE;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+
+      // Central bright flash at end
+      if (raw > 0.85) {
+        const flashT = (raw - 0.85) / 0.15;
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR * flashT);
+        grad.addColorStop(0, `rgba(255,255,255,${flashT * 0.9})`);
+        grad.addColorStop(0.3, `rgba(255,87,34,${flashT * 0.3})`);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      ctx.globalAlpha = 1;
+
+      if (raw < 1) {
+        animId = requestAnimationFrame(draw);
+      } else {
+        // Tunnel done — reveal video
+        tunnelDone = true;
+        canvas.style.transition = 'opacity 0.5s ease';
+        canvas.style.opacity = '0';
+        videoWrap.classList.add('visible');
+        if (video) video.play().catch(() => {});
+      }
+    }
+
+    animId = requestAnimationFrame(draw);
+  }
+
+  // ── Open overlay ─────────────────────────────────────────────
+  expBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    canvas.style.opacity = '1';
+    videoWrap.classList.remove('visible');
+    tunnelDone = false;
+    if (animId) cancelAnimationFrame(animId);
+    runTunnel();
+  });
+
+  // ── Close overlay ─────────────────────────────────────────────
+  function closeOverlay() {
+    if (animId) cancelAnimationFrame(animId);
+    if (video) { video.pause(); video.currentTime = 0; }
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+    videoWrap.classList.remove('visible');
+    canvas.style.opacity = '1';
+  }
+
+  closeBtn.addEventListener('click', closeOverlay);
+
+  // Close on Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.style.display === 'block') closeOverlay();
+  });
+
+  // Resize canvas if window resizes while open
+  window.addEventListener('resize', function () {
+    if (overlay.style.display === 'block' && !tunnelDone) {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+  });
+
+})();
+</script>
+{% endif %}
+
+</body>
+</html>

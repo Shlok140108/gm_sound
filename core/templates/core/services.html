@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% block title %}Services | GM SOUND{% endblock %}
+
+{% block content %}
+
+<div class="bg-charcoal py-24 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 30% 60%, #E8460A, transparent 55%)"></div>
+  <div class="max-w-7xl mx-auto px-4 relative z-10">
+    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">What We Offer</span>
+    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">Our Services</h1>
+    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+      <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
+      <span>/</span><span class="text-white/70">Services</span>
+    </div>
+  </div>
+</div>
+
+<section class="max-w-7xl mx-auto px-4 py-28">
+  {% if services %}
+  <div class="grid md:grid-cols-2 gap-10">
+    {% for service in services %}
+    <div class="group bg-white border border-pebble rounded-2xl overflow-hidden hover:border-accent/30 hover:shadow-xl transition-all duration-400 flex flex-col md:flex-row reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
+      {% if service.image %}
+      <div class="md:w-52 h-52 md:h-auto overflow-hidden flex-shrink-0">
+        <img src="{{ service.image.url }}" alt="{{ service.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      </div>
+      {% endif %}
+      <div class="p-8 flex flex-col justify-center">
+        <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+        </div>
+        <h3 class="text-charcoal font-semibold text-xl mb-3 group-hover:text-accent transition-colors">{{ service.title }}</h3>
+        <p class="text-stone text-sm leading-relaxed">{{ service.description }}</p>
+        <a href="{% url 'contact' %}" class="inline-flex items-center gap-1 text-accent text-sm font-semibold mt-5 hover:gap-3 transition-all">Enquire Now →</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-24 text-stone">
+    <p>No services found. Add some from the admin panel.</p>
+  </div>
+  {% endif %}
+</section>
+
+<section class="bg-accent py-20 reveal">
+  <div class="max-w-4xl mx-auto px-4 text-center text-white">
+    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Need a Custom Audio Solution?</h2>
+    <p class="text-white/75 mb-9 text-lg">We design tailored audio systems for your specific venue, event, or installation requirements.</p>
+    <a href="{% url 'contact' %}" class="inline-block bg-white text-accent font-bold px-9 py-3.5 rounded-full hover:bg-orange-50 transition-colors">Contact Us Today</a>
+  </div>
+</section>
+{% endblock %}

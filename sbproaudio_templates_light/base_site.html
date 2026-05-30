@@ -1,0 +1,596 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════
+     GM SOUND Admin Theme
+     Matches: #0A0A0A bg · #FF5722 accent · DM Sans
+  ═══════════════════════════════════════════════ */
+
+  :root {
+    --dark:    #0A0A0A;
+    --surface: #141414;
+    --card:    #1C1C1C;
+    --border:  #2A2A2A;
+    --muted:   #888888;
+    --text:    #EFEFEF;
+    --accent:  #FF5722;
+    --accent-h:#E64A19;
+  }
+
+  * { box-sizing: border-box; }
+
+  /* ── Base ── */
+  body {
+    background: var(--dark) !important;
+    color: var(--text) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 14px !important;
+  }
+
+  /* ── Header bar ── */
+  #header {
+    background: var(--surface) !important;
+    border-bottom: 2px solid var(--accent) !important;
+    padding: 0 24px !important;
+    height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #header a:link, #header a:visited {
+    color: var(--text) !important;
+    text-decoration: none !important;
+  }
+
+  #branding h1 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 26px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
+    color: var(--text) !important;
+    margin: 0 !important;
+    line-height: 56px !important;
+  }
+
+  #branding h1 a { color: var(--text) !important; }
+
+  /* accent "PRO-AUDIO" portion via pseudo if possible, else colour whole brand */
+  #branding h1 a:after {
+    content: '';
+  }
+
+  #user-tools {
+    color: var(--muted) !important;
+    font-size: 13px !important;
+  }
+
+  #user-tools a {
+    color: var(--accent) !important;
+    font-weight: 500 !important;
+  }
+
+  #user-tools a:hover { color: var(--text) !important; }
+
+  /* ── Breadcrumbs ── */
+  div.breadcrumbs {
+    background: var(--card) !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 10px 24px !important;
+    font-size: 12px !important;
+    color: var(--muted) !important;
+  }
+
+  div.breadcrumbs a { color: var(--accent) !important; text-decoration: none !important; }
+  div.breadcrumbs a:hover { color: var(--text) !important; }
+
+  /* ── Sidebar nav ── */
+  #nav-sidebar {
+    background: var(--surface) !important;
+    border-right: 1px solid var(--border) !important;
+  }
+
+  .toggle-nav-sidebar {
+    background: var(--surface) !important;
+    border-right: 1px solid var(--border) !important;
+    color: var(--muted) !important;
+  }
+
+  /* ── Main content area ── */
+  #main {
+    background: var(--dark) !important;
+  }
+
+  #content {
+    background: var(--dark) !important;
+    padding: 24px !important;
+  }
+
+  #content h1 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 400 !important;
+    color: var(--text) !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 20px !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding-bottom: 12px !important;
+  }
+
+  #content h2, #content h3 {
+    color: var(--text) !important;
+    font-weight: 500 !important;
+  }
+
+  /* ── App index modules (dashboard tiles) ── */
+  .app-sbproaudio .app-index .section,
+  #content-main .module {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    margin-bottom: 16px !important;
+    overflow: hidden !important;
+  }
+
+  .module caption, .module > h2, .inline-group h2 {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
+    padding: 10px 16px !important;
+    border-bottom: 1px solid var(--border) !important;
+    text-transform: uppercase !important;
+  }
+
+  /* ── App index table links ── */
+  #content-main table th a,
+  .change-list .filtered table td a,
+  table.module td a {
+    color: var(--accent) !important;
+    font-weight: 500 !important;
+  }
+
+  /* ── Change list (data tables) ── */
+  #changelist {
+    background: var(--dark) !important;
+  }
+
+  #changelist-filter {
+    background: var(--card) !important;
+    border-left: 1px solid var(--border) !important;
+  }
+
+  #changelist-filter h2 {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
+    padding: 10px 14px !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  #changelist-filter h3 {
+    color: var(--accent) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin: 12px 14px 6px !important;
+  }
+
+  #changelist-filter ul li a {
+    color: var(--muted) !important;
+    font-size: 13px !important;
+    padding: 4px 14px !important;
+    display: block !important;
+  }
+
+  #changelist-filter ul li a:hover,
+  #changelist-filter ul li.selected a {
+    color: var(--accent) !important;
+    background: transparent !important;
+  }
+
+  /* ── Results table ── */
+  #result_list {
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    background: var(--card) !important;
+  }
+
+  #result_list thead th {
+    background: var(--surface) !important;
+    color: var(--muted) !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 10px 14px !important;
+    border-bottom: 1px solid var(--border) !important;
+    white-space: nowrap !important;
+  }
+
+  #result_list thead th a,
+  #result_list thead th a:visited {
+    color: var(--muted) !important;
+  }
+
+  #result_list thead th a:hover {
+    color: var(--accent) !important;
+  }
+
+  #result_list tbody tr {
+    border-bottom: 1px solid var(--border) !important;
+    transition: background 0.15s !important;
+  }
+
+  #result_list tbody tr:hover {
+    background: #222 !important;
+  }
+
+  #result_list tbody tr:last-child {
+    border-bottom: none !important;
+  }
+
+  #result_list tbody td {
+    color: var(--text) !important;
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+    background: transparent !important;
+  }
+
+  #result_list tbody td a {
+    color: var(--accent) !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+  }
+
+  #result_list tbody td a:hover { color: var(--text) !important; }
+
+  /* Zebra rows off — flat dark is cleaner */
+  #result_list tr.row1, #result_list tr.row2 {
+    background: transparent !important;
+  }
+
+  /* ── Pagination ── */
+  .paginator {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    padding: 8px 14px !important;
+    color: var(--muted) !important;
+    font-size: 13px !important;
+    margin-top: 12px !important;
+  }
+
+  .paginator a {
+    color: var(--accent) !important;
+    font-weight: 500 !important;
+    padding: 2px 8px !important;
+    border-radius: 4px !important;
+  }
+
+  .paginator a:hover {
+    background: var(--surface) !important;
+  }
+
+  /* ── Search bar ── */
+  #toolbar {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    margin-bottom: 16px !important;
+    padding: 10px 14px !important;
+  }
+
+  #searchbar {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+    outline: none !important;
+    width: 280px !important;
+  }
+
+  #searchbar:focus { border-color: var(--accent) !important; }
+  #searchbar::placeholder { color: var(--muted) !important; }
+
+  #toolbar input[type="submit"] {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    margin-left: 6px !important;
+  }
+
+  #toolbar input[type="submit"]:hover {
+    background: var(--accent-h) !important;
+  }
+
+  /* ── Action bar ── */
+  .actions {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    padding: 8px 14px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .actions select {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+  }
+
+  .actions button, .actions input[type="submit"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 6px !important;
+    padding: 6px 14px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+  }
+
+  /* ── Add / Save buttons ── */
+  .addlink, .object-tools a.addlink {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    border: none !important;
+  }
+
+  .addlink:hover { background: var(--accent-h) !important; }
+
+  .object-tools {
+    margin-bottom: 12px !important;
+  }
+
+  input[type="submit"].default,
+  .submit-row input[type="submit"],
+  .submit-row input.default {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 9px 20px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+  }
+
+  input[type="submit"].default:hover,
+  .submit-row input[type="submit"]:hover {
+    background: var(--accent-h) !important;
+  }
+
+  .submit-row {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    margin-top: 20px !important;
+  }
+
+  .submit-row a.deletelink {
+    color: #ef5350 !important;
+  }
+
+  /* ── Change form fieldsets ── */
+  .form-row {
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  fieldset {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    margin-bottom: 16px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  fieldset h2, fieldset.module h2 {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
+    padding: 10px 16px !important;
+    border-bottom: 1px solid var(--border) !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+  }
+
+  .form-row label {
+    color: var(--muted) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.4px !important;
+  }
+
+  input[type="text"], input[type="email"], input[type="number"],
+  input[type="url"], input[type="password"],
+  textarea, select {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+    outline: none !important;
+  }
+
+  input[type="text"]:focus, input[type="email"]:focus,
+  input[type="number"]:focus, textarea:focus, select:focus {
+    border-color: var(--accent) !important;
+  }
+
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    color: var(--muted) !important;
+  }
+
+  /* Readonly fields */
+  .readonly {
+    color: var(--text) !important;
+    font-size: 13px !important;
+    padding: 8px 0 !important;
+    display: block !important;
+  }
+
+  /* Checkboxes */
+  input[type="checkbox"] {
+    accent-color: var(--accent) !important;
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* ── Help text ── */
+  .help {
+    color: var(--muted) !important;
+    font-size: 12px !important;
+  }
+
+  /* ── Error messages ── */
+  .errornote {
+    background: #2C1010 !important;
+    border: 1px solid #E53935 !important;
+    border-radius: 8px !important;
+    color: #EF9A9A !important;
+    padding: 10px 14px !important;
+  }
+
+  ul.errorlist li {
+    color: #EF5350 !important;
+    font-size: 12px !important;
+  }
+
+  /* ── Success messages ── */
+  .success, li.success {
+    color: #A5D6A7 !important;
+  }
+
+  /* ── Date hierarchy ── */
+  .xfull #changelist-filter, .change-list #changelist .xfull {
+    background: var(--card) !important;
+  }
+
+  /* ── Calendar / date widget ── */
+  .calendar caption, .calendarbox h2 {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+  }
+
+  .calendar td a, .timelist a {
+    color: var(--accent) !important;
+  }
+
+  /* ── Related widget popup links ── */
+  a.related-widget-wrapper-link { color: var(--accent) !important; }
+
+  /* ── Recent actions sidebar ── */
+  #recent-actions-module h2 {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
+    padding: 10px 16px !important;
+    margin: 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  #recent-actions-module ul li a { color: var(--accent) !important; }
+  #recent-actions-module ul li .mini { color: var(--muted) !important; font-size: 11px !important; }
+
+  /* ── App module icons on dashboard ── */
+  .app-icon { display: none !important; }
+
+  /* ── Delete confirmation ── */
+  .delete-confirmation h1 { color: #EF5350 !important; }
+
+  /* ── Inline admin tables ── */
+  .inline-related h3 {
+    background: var(--surface) !important;
+    color: var(--accent) !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    padding: 8px 14px !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  /* ── Dashboard column layout ── */
+  #content-main {
+    padding: 0 !important;
+  }
+
+  /* ── Nav sidebar items ── */
+  #nav-sidebar .current-app .section:link,
+  #nav-sidebar .current-app .section:visited {
+    color: var(--accent) !important;
+    font-weight: 500 !important;
+  }
+
+  #nav-sidebar a:link, #nav-sidebar a:visited {
+    color: var(--muted) !important;
+    font-size: 13px !important;
+    padding: 5px 14px !important;
+    display: block !important;
+  }
+
+  #nav-sidebar a:hover {
+    color: var(--accent) !important;
+    background: rgba(255, 87, 34, 0.07) !important;
+  }
+
+  /* ── Accent orange on active/selected rows ── */
+  #result_list thead th.sorted {
+    border-top: 2px solid var(--accent) !important;
+    color: var(--accent) !important;
+  }
+
+  /* ── "3 quote requests" count badge on dashboard ── */
+  .model-quoterequest .changelink,
+  .model-contactsubmission .changelink {
+    color: var(--accent) !important;
+  }
+</style>
+{% endblock %}

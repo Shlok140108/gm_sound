@@ -1,0 +1,94 @@
+{% extends 'core/base.html' %}
+{% block title %}About Us | GM SOUND{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<div class="bg-charcoal py-24 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 70% 50%, #E8460A, transparent 60%)"></div>
+  <div class="max-w-7xl mx-auto px-4 relative z-10">
+    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">Who We Are</span>
+    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">About GM SOUND</h1>
+    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+      <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
+      <span>/</span><span class="text-white/70">About</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<section class="max-w-7xl mx-auto px-4 py-28 grid md:grid-cols-2 gap-20 items-start">
+  <div class="reveal-left">
+    <h2 class="font-display text-5xl font-bold text-charcoal mb-7 leading-tight">{{ content.about_title }}</h2>
+    <p class="text-stone leading-relaxed mb-5">{{ content.about_description }}</p>
+    <p class="text-stone leading-relaxed mb-5">At GM SOUND, we believe where performance meets perfection. Our sound systems are engineered to deliver unmatched power, versatility, and extraordinary sound clarity.</p>
+    <p class="text-stone leading-relaxed">We serve a wide range of clients including event management companies, DJ professionals, auditoriums, clubs, religious institutions, and commercial establishments across India.</p>
+
+    <div class="grid grid-cols-2 gap-5 mt-12 stagger">
+      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
+        <p class="font-display text-5xl font-bold text-accent"><span class="count-up" data-target="15" data-suffix="+">15+</span></p>
+        <p class="text-xs text-stone mt-2 uppercase tracking-widest">Years of Expertise</p>
+      </div>
+      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
+        <p class="font-display text-5xl font-bold text-accent"><span class="count-up" data-target="500" data-suffix="+">500+</span></p>
+        <p class="text-xs text-stone mt-2 uppercase tracking-widest">Products Delivered</p>
+      </div>
+      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
+        <p class="font-display text-5xl font-bold text-accent"><span class="count-up" data-target="200" data-suffix="+">200+</span></p>
+        <p class="text-xs text-stone mt-2 uppercase tracking-widest">Happy Clients</p>
+      </div>
+      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
+        <p class="font-display text-5xl font-bold text-accent">Pan</p>
+        <p class="text-xs text-stone mt-2 uppercase tracking-widest">India Delivery</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-5 reveal-right">
+    <div class="bg-white border border-pebble rounded-2xl p-8 card-lift">
+      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h3 class="text-charcoal font-semibold mb-2">{{ content.mission }}</h3>
+      <p class="text-stone text-sm leading-relaxed">To manufacture and deliver professional audio systems of the highest quality, making advanced sound technology accessible across India.</p>
+    </div>
+    <div class="bg-white border border-pebble rounded-2xl p-8 card-lift">
+      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+      </div>
+      <h3 class="text-charcoal font-semibold mb-2">{{ content.vision }}</h3>
+      <p class="text-stone text-sm leading-relaxed">To be India's most trusted and innovative professional audio brand, setting benchmarks for quality, performance, and customer satisfaction.</p>
+    </div>
+    <div class="bg-accent rounded-2xl p-8">
+      <h3 class="text-white font-semibold mb-2">Ready to Work Together?</h3>
+      <p class="text-white/75 text-sm mb-5">Have questions? Reach out to our team for expert audio consultation.</p>
+      <a href="{% url 'contact' %}" class="inline-block bg-white text-accent font-bold px-6 py-2.5 rounded-full text-sm hover:bg-orange-50 transition-colors">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+{% if why_items %}
+<section class="bg-white border-t border-pebble py-28">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 reveal">
+      <span class="line-accent justify-center text-accent text-xs font-semibold uppercase tracking-[3px] mb-3 flex items-center gap-2">Why GM SOUND</span>
+      <h2 class="font-display text-5xl font-bold text-charcoal mt-2">Why Choose Us?</h2>
+      <p class="text-stone mt-4 max-w-xl mx-auto text-sm leading-relaxed">We combine quality engineering, modern technology, and industry expertise for reliable audio solutions.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+      {% for item in why_items %}
+      <div class="bg-cream border border-pebble rounded-2xl p-7 hover:border-accent/30 hover:shadow-md transition-all group card-lift">
+        <div class="w-12 h-12 bg-accentLight rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
+          <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h3 class="text-charcoal font-semibold mb-2">{{ item.title }}</h3>
+        <p class="text-stone text-sm leading-relaxed">{{ item.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

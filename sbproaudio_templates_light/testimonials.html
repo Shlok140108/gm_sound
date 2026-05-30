@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% block title %}Testimonials | GM SOUND{% endblock %}
+
+{% block content %}
+
+<div class="bg-charcoal py-24 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 50% 70%, #E8460A, transparent 50%)"></div>
+  <div class="max-w-7xl mx-auto px-4 relative z-10">
+    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">Client Stories</span>
+    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">Testimonials</h1>
+    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+      <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
+      <span>/</span><span class="text-white/70">Testimonials</span>
+    </div>
+  </div>
+</div>
+
+<section class="max-w-7xl mx-auto px-4 py-28">
+  {% if testimonials %}
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for t in testimonials %}
+    <div class="bg-white border border-pebble rounded-2xl p-8 flex flex-col card-lift reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
+      <div class="flex gap-1 mb-5">
+        {% for i in "12345" %}
+        <span class="text-xl {% if forloop.counter <= t.rating %}text-accent{% else %}text-pebble{% endif %}">★</span>
+        {% endfor %}
+      </div>
+      <p class="text-stone text-sm leading-relaxed flex-1">"{{ t.message }}"</p>
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-pebble">
+        {% if t.photo %}
+        <img src="{{ t.photo.url }}" alt="{{ t.name }}" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
+        {% else %}
+        <div class="w-12 h-12 rounded-full bg-accentLight flex items-center justify-center text-accent font-bold flex-shrink-0">
+          {{ t.name|first|upper }}
+        </div>
+        {% endif %}
+        <div>
+          <p class="text-charcoal font-semibold text-sm">{{ t.name }}</p>
+          <p class="text-stone text-xs mt-0.5">{% if t.designation %}{{ t.designation }}{% if t.company %}, {% endif %}{% endif %}{{ t.company }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-24 text-stone reveal">
+    <p>No testimonials yet. Check back soon!</p>
+  </div>
+  {% endif %}
+</section>
+
+<section class="bg-accent py-20 reveal">
+  <div class="max-w-4xl mx-auto px-4 text-center text-white">
+    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Become Our Next Happy Client</h2>
+    <p class="text-white/75 mb-9 text-lg">Join hundreds of satisfied professionals who trust GM SOUND for their sound systems.</p>
+    <a href="{% url 'contact' %}" class="inline-block bg-white text-accent font-bold px-9 py-3.5 rounded-full hover:bg-orange-50 transition-colors">Contact Us Today</a>
+  </div>
+</section>
+{% endblock %}

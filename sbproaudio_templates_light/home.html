@@ -1,0 +1,283 @@
+{% extends 'core/base.html' %}
+{% block title %}GM SOUND | Professional Sound System Manufacturer{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="relative min-h-[92vh] overflow-hidden bg-charcoal flex items-center">
+  {% if slides %}
+    {% for slide in slides %}
+    <div class="hero-slide absolute inset-0">
+      <img src="{{ slide.image.url }}" alt="{{ slide.title }}"
+           class="w-full h-full object-cover opacity-30">
+      <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/60 to-transparent"></div>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="hero-slide active absolute inset-0 bg-gradient-to-br from-charcoal via-stone/20 to-charcoal/90"></div>
+  {% endif %}
+
+  <!-- Hero text (always visible, overlaid) -->
+  <div class="relative z-10 max-w-7xl mx-auto px-4 w-full py-24">
+    {% if slides %}
+      {% for slide in slides %}
+      <div class="hero-content-slide" data-index="{{ forloop.counter0 }}" style="display:none">
+        <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[4px] mb-6 block">{{ slide.subtitle }}</span>
+        <h1 class="font-display text-5xl md:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">{{ slide.title }}</h1>
+        {% if slide.description %}<p class="text-white/60 text-lg mb-10 leading-relaxed max-w-lg">{{ slide.description }}</p>{% endif %}
+        {% if slide.button_text %}
+        <a href="{{ slide.button_url }}" class="inline-flex items-center gap-2 bg-accent hover:bg-orange-700 text-white font-semibold px-8 py-3.5 rounded-full transition-all hover:gap-4">
+          {{ slide.button_text }}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+    <div>
+      <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[4px] mb-6 block">Premium Sound System Manufacturing</span>
+      <h1 class="font-display text-5xl md:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">Powerful Performance & Crystal Clear Sound</h1>
+      <p class="text-white/60 text-lg mb-10 leading-relaxed max-w-lg">GM SOUND delivers high-performance professional audio solutions for events, DJs, live concerts, auditoriums, and commercial installations.</p>
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 bg-accent hover:bg-orange-700 text-white font-semibold px-8 py-3.5 rounded-full transition-all hover:gap-4">
+        Get a Quote
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Slider Controls -->
+  {% if slides|length > 1 %}
+  <button id="hero-prev" class="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/10 hover:bg-accent border border-white/20 rounded-full flex items-center justify-center transition-colors">
+    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <button id="hero-next" class="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/10 hover:bg-accent border border-white/20 rounded-full flex items-center justify-center transition-colors">
+    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+    {% for slide in slides %}<button class="hero-dot w-2.5 h-2.5 rounded-full bg-charcoal/20 transition-all duration-300"></button>{% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Scroll cue -->
+  <div class="absolute bottom-10 right-8 hidden md:flex flex-col items-center gap-2 z-10">
+    <span class="text-white/30 text-xs tracking-widest uppercase rotate-90 mb-4">Scroll</span>
+    <div class="w-px h-16 bg-gradient-to-b from-white/30 to-transparent"></div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="bg-accent">
+  <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white stagger">
+    <div>
+      <p class="font-display text-4xl font-bold"><span class="count-up" data-target="15" data-suffix="+">15+</span></p>
+      <p class="text-xs font-medium mt-1 uppercase tracking-widest opacity-80">Years Experience</p>
+    </div>
+    <div>
+      <p class="font-display text-4xl font-bold"><span class="count-up" data-target="500" data-suffix="+">500+</span></p>
+      <p class="text-xs font-medium mt-1 uppercase tracking-widest opacity-80">Products Sold</p>
+    </div>
+    <div>
+      <p class="font-display text-4xl font-bold"><span class="count-up" data-target="200" data-suffix="+">200+</span></p>
+      <p class="text-xs font-medium mt-1 uppercase tracking-widest opacity-80">Happy Clients</p>
+    </div>
+    <div>
+      <p class="font-display text-4xl font-bold">Pan India</p>
+      <p class="text-xs font-medium mt-1 uppercase tracking-widest opacity-80">Delivery</p>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT STRIP -->
+<section class="max-w-7xl mx-auto px-4 py-28 grid md:grid-cols-2 gap-20 items-center">
+  <div class="reveal-left">
+    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">About GM SOUND</span>
+    <h2 class="font-display text-5xl md:text-6xl font-bold text-charcoal mt-2 mb-7 leading-tight">Quality.<br>Commitment.<br>Innovation.</h2>
+    <p class="text-stone leading-relaxed mb-6">GM SOUND is committed to delivering premium-grade professional audio systems with innovation, durability, and unmatched sound clarity. Inspired by modern pro-audio industry standards, we manufacture high-quality sound equipment designed for professional use across India.</p>
+    <a href="{% url 'about' %}" class="inline-flex items-center gap-2 text-accent font-semibold text-sm hover:gap-4 transition-all">
+      Read More About Us
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </a>
+  </div>
+  <div class="grid grid-cols-2 gap-4 reveal-right">
+    <div class="bg-white border border-pebble rounded-2xl p-6 card-lift">
+      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h4 class="text-charcoal font-semibold mb-1 text-sm">Premium Quality</h4>
+      <p class="text-stone text-xs leading-relaxed">Strict quality control in every product</p>
+    </div>
+    <div class="bg-white border border-pebble rounded-2xl p-6 card-lift mt-8">
+      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h4 class="text-charcoal font-semibold mb-1 text-sm">Powerful Bass</h4>
+      <p class="text-stone text-xs leading-relaxed">Deep bass & crystal-clear audio</p>
+    </div>
+    <div class="bg-white border border-pebble rounded-2xl p-6 card-lift">
+      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+      </div>
+      <h4 class="text-charcoal font-semibold mb-1 text-sm">Customized</h4>
+      <p class="text-stone text-xs leading-relaxed">Tailored audio solutions for you</p>
+    </div>
+    <div class="bg-white border border-pebble rounded-2xl p-6 card-lift mt-8">
+      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h4 class="text-charcoal font-semibold mb-1 text-sm">Affordable</h4>
+      <p class="text-stone text-xs leading-relaxed">Competitive pricing, top quality</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+{% if services %}
+<section class="bg-white border-t border-pebble py-28">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 reveal">
+      <span class="line-accent justify-center text-accent text-xs font-semibold uppercase tracking-[3px] mb-3 flex items-center gap-2">Our Services</span>
+      <h2 class="font-display text-5xl font-bold text-charcoal mt-2">Professional Audio Solutions</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8 stagger">
+      {% for service in services %}
+      <div class="group bg-cream border border-pebble rounded-2xl overflow-hidden card-lift hover:border-accent/30 transition-all duration-300">
+        {% if service.image %}
+        <div class="h-52 overflow-hidden">
+          <img src="{{ service.image.url }}" alt="{{ service.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        {% endif %}
+        <div class="p-7">
+          <h3 class="text-charcoal font-semibold text-lg mb-3 group-hover:text-accent transition-colors">{{ service.title }}</h3>
+          <p class="text-stone text-sm leading-relaxed">{{ service.description|truncatewords:25 }}</p>
+          <a href="{% url 'services' %}" class="inline-flex items-center gap-1 text-accent text-sm font-semibold mt-5 hover:gap-3 transition-all">Explore More →</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-12 reveal">
+      <a href="{% url 'services' %}" class="inline-block border border-accent text-accent hover:bg-accent hover:text-white font-semibold px-8 py-3 rounded-full transition-all">View All Services</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- FEATURED PRODUCTS -->
+{% if featured_products %}
+<section class="max-w-7xl mx-auto px-4 py-28">
+  <div class="flex items-end justify-between mb-16">
+    <div class="reveal-left">
+      <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-3 block">Our Products</span>
+      <h2 class="font-display text-5xl font-bold text-charcoal mt-2">Featured Products</h2>
+    </div>
+    <a href="{% url 'products' %}" class="text-sm text-accent font-semibold hidden md:block hover:underline reveal-right">View All →</a>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 stagger">
+    {% for product in featured_products %}
+    <div class="group bg-white border border-pebble rounded-2xl overflow-hidden card-lift hover:border-accent/30 transition-all">
+      <div class="h-56 overflow-hidden bg-cream">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        {% else %}
+        <div class="w-full h-full flex items-center justify-center text-pebble">
+          <svg class="w-16 h-16 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+        </div>
+        {% endif %}
+      </div>
+      <div class="p-6">
+        {% if product.category %}<span class="text-xs text-accent font-semibold uppercase tracking-widest">{{ product.category.name }}</span>{% endif %}
+        <h3 class="text-charcoal font-semibold mt-1 mb-2 group-hover:text-accent transition-colors">{{ product.name }}</h3>
+        {% if product.short_description %}<p class="text-stone text-sm leading-relaxed">{{ product.short_description|truncatewords:15 }}</p>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-10 md:hidden reveal">
+    <a href="{% url 'products' %}" class="inline-block border border-accent text-accent hover:bg-accent hover:text-white font-semibold px-8 py-3 rounded-full transition-all">View All Products</a>
+  </div>
+</section>
+{% endif %}
+
+<!-- TESTIMONIALS -->
+{% if testimonials %}
+<section class="bg-white border-t border-pebble py-28">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 reveal">
+      <span class="line-accent justify-center text-accent text-xs font-semibold uppercase tracking-[3px] mb-3 flex items-center gap-2">Testimonials</span>
+      <h2 class="font-display text-5xl font-bold text-charcoal mt-2">What Our Clients Say</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8 stagger">
+      {% for t in testimonials|slice:":3" %}
+      <div class="bg-cream border border-pebble rounded-2xl p-7 card-lift">
+        <div class="flex gap-1 mb-5">
+          {% for i in "12345" %}<span class="text-lg {% if forloop.counter <= t.rating %}text-accent{% else %}text-pebble{% endif %}">★</span>{% endfor %}
+        </div>
+        <p class="text-stone text-sm leading-relaxed mb-6">"{{ t.message|truncatewords:40 }}"</p>
+        <div class="flex items-center gap-3 pt-5 border-t border-pebble">
+          {% if t.photo %}<img src="{{ t.photo.url }}" alt="{{ t.name }}" class="w-10 h-10 rounded-full object-cover">
+          {% else %}<div class="w-10 h-10 rounded-full bg-accentLight flex items-center justify-center text-accent font-bold text-sm">{{ t.name|first }}</div>{% endif %}
+          <div>
+            <p class="text-charcoal text-sm font-semibold">{{ t.name }}</p>
+            <p class="text-stone text-xs">{% if t.designation %}{{ t.designation }}{% if t.company %}, {% endif %}{% endif %}{{ t.company }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-12 reveal">
+      <a href="{% url 'testimonials' %}" class="inline-block border border-accent text-accent hover:bg-accent hover:text-white font-semibold px-8 py-3 rounded-full transition-all">Read All Reviews</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- CTA -->
+<section class="max-w-7xl mx-auto px-4 py-28 reveal">
+  <div class="bg-charcoal rounded-3xl px-10 py-20 text-center relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 20% 50%, #E8460A 0%, transparent 50%), radial-gradient(circle at 80% 20%, #E8460A 0%, transparent 40%)"></div>
+    <div class="relative z-10">
+      <h2 class="font-display text-5xl md:text-6xl font-bold text-white mb-4">Ready to Elevate Your Sound?</h2>
+      <p class="text-white/60 text-lg mb-10">Get in touch for custom audio solutions, pricing, and installation.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="{% url 'contact' %}" class="bg-accent hover:bg-orange-700 text-white font-bold px-9 py-3.5 rounded-full transition-colors">Get a Free Quote</a>
+        {% if site_settings and site_settings.phone_primary %}
+        <a href="tel:{{ site_settings.phone_primary }}" class="border-2 border-white/20 text-white font-bold px-9 py-3.5 rounded-full hover:bg-white/10 transition-colors">Call Now</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Sync hero content slides with image slides
+  const contentSlides = document.querySelectorAll('.hero-content-slide');
+  if (contentSlides.length) {
+    const origShow = window.showSlideOrig;
+    function syncContent(n) {
+      contentSlides.forEach(s => s.style.display = 'none');
+      const idx = ((n % contentSlides.length) + contentSlides.length) % contentSlides.length;
+      if (contentSlides[idx]) contentSlides[idx].style.display = 'block';
+    }
+    syncContent(0);
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    let cur = 0;
+    function showHero(n) {
+      heroSlides.forEach(s => s.classList.remove('active'));
+      heroDots.forEach(d => { d.classList.remove('bg-accent','scale-125'); d.classList.add('bg-charcoal/20'); });
+      cur = (n + heroSlides.length) % heroSlides.length;
+      if (heroSlides[cur]) heroSlides[cur].classList.add('active');
+      if (heroDots[cur]) { heroDots[cur].classList.add('bg-accent','scale-125'); heroDots[cur].classList.remove('bg-charcoal/20'); }
+      syncContent(cur);
+    }
+    showHero(0);
+    let autoHero = setInterval(() => showHero(cur + 1), 5500);
+    document.getElementById('hero-prev')?.addEventListener('click', () => { clearInterval(autoHero); showHero(cur - 1); });
+    document.getElementById('hero-next')?.addEventListener('click', () => { clearInterval(autoHero); showHero(cur + 1); });
+    heroDots.forEach((d, i) => d.addEventListener('click', () => { clearInterval(autoHero); showHero(i); }));
+  }
+</script>
+{% endblock %}

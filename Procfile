@@ -1,0 +1,1 @@
+web: gunicorn sbproaudio.wsgi --log-file -
