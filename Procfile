@@ -1,1 +1,2 @@
-web: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn sbproaudio.wsgi --log-file -
+release: python manage.py migrate
+web: gunicorn sbproaudio.wsgi --log-file -
