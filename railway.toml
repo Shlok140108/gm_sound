@@ -1,2 +1,4 @@
+cat > railway.toml << 'EOF'
 [deploy]
-startCommand = "python manage.py migrate && gunicorn sbproaudio.wsgi --log-file -"
+startCommand = "python manage.py migrate && python manage.py createsuperuser --noinput || true && gunicorn sbproaudio.wsgi --log-file -"
+EOF
