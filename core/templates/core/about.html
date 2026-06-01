@@ -1,94 +1,263 @@
 {% extends 'core/base.html' %}
-{% block title %}About Us | GM SOUND{% endblock %}
+{% block title %}About Us | GM AUDIO{% endblock %}
 
 {% block content %}
 
-<!-- PAGE HERO -->
-<div class="bg-charcoal py-24 relative overflow-hidden">
-  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 70% 50%, #E8460A, transparent 60%)"></div>
-  <div class="max-w-7xl mx-auto px-4 relative z-10">
-    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">Who We Are</span>
-    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">About GM SOUND</h1>
-    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+<!-- ══ PAGE HERO ══ -->
+<div class="relative bg-surface py-28 overflow-hidden border-b border-border">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 50%, rgba(255,87,34,0.07) 0%, transparent 65%);"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-30"></div>
+  <!-- Ghost text -->
+  <span class="absolute right-0 top-1/2 -translate-y-1/2 font-display text-[clamp(80px,18vw,220px)] text-white/[0.025] leading-none select-none pointer-events-none tracking-widest">ABOUT</span>
+  <div class="max-w-7xl mx-auto px-5 relative z-10">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-5">Who We Are</p>
+    <h1 class="font-display text-[clamp(52px,9vw,110px)] text-white leading-none mb-6">About SB PRO-AUDIO</h1>
+    <p class="text-muted text-base max-w-xl leading-relaxed mb-6">Engineered in Pune. Trusted across India. 15+ years of delivering sound that moves people.</p>
+    <div class="flex items-center gap-2 text-sm text-muted">
       <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
-      <span>/</span><span class="text-white/70">About</span>
+      <span class="text-border">/</span>
+      <span class="text-white">About</span>
     </div>
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
-<section class="max-w-7xl mx-auto px-4 py-28 grid md:grid-cols-2 gap-20 items-start">
-  <div class="reveal-left">
-    <h2 class="font-display text-5xl font-bold text-charcoal mb-7 leading-tight">{{ content.about_title }}</h2>
-    <p class="text-stone leading-relaxed mb-5">{{ content.about_description }}</p>
-    <p class="text-stone leading-relaxed mb-5">At GM SOUND, we believe where performance meets perfection. Our sound systems are engineered to deliver unmatched power, versatility, and extraordinary sound clarity.</p>
-    <p class="text-stone leading-relaxed">We serve a wide range of clients including event management companies, DJ professionals, auditoriums, clubs, religious institutions, and commercial establishments across India.</p>
+<!-- ══ MAIN STORY ══ -->
+<section class="max-w-7xl mx-auto px-5 py-24 grid md:grid-cols-2 gap-20 items-center">
+  <div class="reveal-l">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-5">Our Story</p>
+    <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none mb-7">{{ content.about_title|default:"Quality · Commitment · Innovation" }}</h2>
+    <p class="text-muted leading-relaxed mb-5">{{ content.about_description|default:"SB PRO-AUDIO is committed to delivering premium-grade professional audio systems with innovation, durability, and unmatched sound clarity. Inspired by modern pro-audio industry standards, we manufacture high-quality sound equipment designed for professional use across India." }}</p>
+    <p class="text-muted leading-relaxed mb-5">At SB PRO-AUDIO, we believe where performance meets perfection. Our sound systems are engineered to deliver unmatched power, versatility, and extraordinary sound clarity. Every product leaving our facility passes through rigorous quality checks and acoustic testing.</p>
+    <p class="text-muted leading-relaxed mb-10">We serve a wide range of clients including event management companies, DJ professionals, auditoriums, clubs, religious institutions, and commercial establishments across India — from small intimate venues to massive stadium-scale productions.</p>
 
-    <div class="grid grid-cols-2 gap-5 mt-12 stagger">
-      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
-        <p class="font-display text-5xl font-bold text-accent"><span class="count-up" data-target="15" data-suffix="+">15+</span></p>
-        <p class="text-xs text-stone mt-2 uppercase tracking-widest">Years of Expertise</p>
-      </div>
-      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
-        <p class="font-display text-5xl font-bold text-accent"><span class="count-up" data-target="500" data-suffix="+">500+</span></p>
-        <p class="text-xs text-stone mt-2 uppercase tracking-widest">Products Delivered</p>
-      </div>
-      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
-        <p class="font-display text-5xl font-bold text-accent"><span class="count-up" data-target="200" data-suffix="+">200+</span></p>
-        <p class="text-xs text-stone mt-2 uppercase tracking-widest">Happy Clients</p>
-      </div>
-      <div class="text-center bg-cream border border-pebble rounded-2xl p-6">
-        <p class="font-display text-5xl font-bold text-accent">Pan</p>
-        <p class="text-xs text-stone mt-2 uppercase tracking-widest">India Delivery</p>
-      </div>
+    <div class="flex flex-wrap gap-3">
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 bg-accent hover:bg-orange-600 text-white font-semibold px-7 py-3.5 rounded-full transition-all text-sm">
+        Work With Us
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+      <a href="{% url 'products' %}" class="inline-flex items-center gap-2 border border-border hover:border-accent text-muted hover:text-accent font-semibold px-7 py-3.5 rounded-full transition-all text-sm">
+        View Products
+      </a>
     </div>
   </div>
 
-  <div class="space-y-5 reveal-right">
-    <div class="bg-white border border-pebble rounded-2xl p-8 card-lift">
-      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
-        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-      </div>
-      <h3 class="text-charcoal font-semibold mb-2">{{ content.mission }}</h3>
-      <p class="text-stone text-sm leading-relaxed">To manufacture and deliver professional audio systems of the highest quality, making advanced sound technology accessible across India.</p>
+  <!-- Stats grid -->
+  <div class="reveal-r grid grid-cols-2 gap-4">
+    <div class="bg-card border border-border rounded-2xl p-7 hover:border-accent transition-colors group">
+      <span class="font-display text-5xl text-accent leading-none block mb-2">
+        <span class="count-up" data-target="15" data-suffix="+">15+</span>
+      </span>
+      <span class="text-xs text-muted uppercase tracking-widest font-semibold">Years of Expertise</span>
+      <p class="text-muted text-xs mt-3 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity">Built on a foundation of passion, precision, and professional audio knowledge.</p>
     </div>
-    <div class="bg-white border border-pebble rounded-2xl p-8 card-lift">
-      <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
-        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-      </div>
-      <h3 class="text-charcoal font-semibold mb-2">{{ content.vision }}</h3>
-      <p class="text-stone text-sm leading-relaxed">To be India's most trusted and innovative professional audio brand, setting benchmarks for quality, performance, and customer satisfaction.</p>
+    <div class="bg-card border border-border rounded-2xl p-7 hover:border-accent transition-colors group">
+      <span class="font-display text-5xl text-white leading-none block mb-2">
+        <span class="count-up" data-target="500" data-suffix="+">500+</span>
+      </span>
+      <span class="text-xs text-muted uppercase tracking-widest font-semibold">Products Delivered</span>
+      <p class="text-muted text-xs mt-3 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity">Every unit tested for peak acoustic performance before it leaves our facility.</p>
     </div>
-    <div class="bg-accent rounded-2xl p-8">
-      <h3 class="text-white font-semibold mb-2">Ready to Work Together?</h3>
-      <p class="text-white/75 text-sm mb-5">Have questions? Reach out to our team for expert audio consultation.</p>
-      <a href="{% url 'contact' %}" class="inline-block bg-white text-accent font-bold px-6 py-2.5 rounded-full text-sm hover:bg-orange-50 transition-colors">Get in Touch</a>
+    <div class="bg-card border border-border rounded-2xl p-7 hover:border-accent transition-colors group">
+      <span class="font-display text-5xl text-white leading-none block mb-2">
+        <span class="count-up" data-target="200" data-suffix="+">200+</span>
+      </span>
+      <span class="text-xs text-muted uppercase tracking-widest font-semibold">Happy Clients</span>
+      <p class="text-muted text-xs mt-3 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity">From solo DJs to large production companies — they all trust SB PRO-AUDIO.</p>
+    </div>
+    <div class="bg-accent rounded-2xl p-7 group relative overflow-hidden">
+      <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity"></div>
+      <span class="font-display text-5xl text-white leading-none block mb-2">Pan India</span>
+      <span class="text-xs text-white/70 uppercase tracking-widest font-semibold">Delivery Network</span>
+      <p class="text-white/60 text-xs mt-3 leading-relaxed">We ship and install anywhere across India with expert technicians on site.</p>
     </div>
   </div>
 </section>
 
-<!-- WHY CHOOSE US -->
-{% if why_items %}
-<section class="bg-white border-t border-pebble py-28">
-  <div class="max-w-7xl mx-auto px-4">
+<!-- ══ MISSION & VISION ══ -->
+<section class="border-y border-border bg-surface py-24">
+  <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16 reveal">
-      <span class="line-accent justify-center text-accent text-xs font-semibold uppercase tracking-[3px] mb-3 flex items-center gap-2">Why GM SOUND</span>
-      <h2 class="font-display text-5xl font-bold text-charcoal mt-2">Why Choose Us?</h2>
-      <p class="text-stone mt-4 max-w-xl mx-auto text-sm leading-relaxed">We combine quality engineering, modern technology, and industry expertise for reliable audio solutions.</p>
+      <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">What Drives Us</p>
+      <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none">Purpose Built.<br>Performance Driven.</h2>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+    <div class="grid md:grid-cols-3 gap-6 stag">
+
+      <div class="bg-card border border-border rounded-2xl p-8 hover:border-accent transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+          <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-lg mb-3">Our Mission</h3>
+        <p class="text-muted text-sm leading-relaxed">To manufacture and deliver professional audio systems of the highest quality, making advanced sound technology accessible across India — at every budget, for every venue.</p>
+        <div class="h-px w-0 group-hover:w-full bg-accent mt-6 transition-all duration-500"></div>
+      </div>
+
+      <div class="bg-card border border-border rounded-2xl p-8 hover:border-accent transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+          <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-lg mb-3">Our Vision</h3>
+        <p class="text-muted text-sm leading-relaxed">To be India's most trusted and innovative professional audio brand — setting benchmarks for quality, performance, and customer satisfaction in every city we serve.</p>
+        <div class="h-px w-0 group-hover:w-full bg-accent mt-6 transition-all duration-500"></div>
+      </div>
+
+      <div class="bg-card border border-border rounded-2xl p-8 hover:border-accent transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+          <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-lg mb-3">Our Promise</h3>
+        <p class="text-muted text-sm leading-relaxed">Every SB PRO-AUDIO product is backed by warranty, supported by experts, and built to last years of continuous professional use — in the toughest conditions imaginable.</p>
+        <div class="h-px w-0 group-hover:w-full bg-accent mt-6 transition-all duration-500"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ TIMELINE / JOURNEY ══ -->
+<section class="max-w-7xl mx-auto px-5 py-24">
+  <div class="text-center mb-16 reveal">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">Our Journey</p>
+    <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none">15 Years of Sound</h2>
+    <p class="text-muted mt-4 max-w-lg mx-auto text-sm leading-relaxed">From a small workshop in Pune to a Pan-India professional audio brand.</p>
+  </div>
+
+  <div class="relative max-w-3xl mx-auto">
+    <!-- Line -->
+    <div class="absolute left-1/2 top-0 bottom-0 w-px bg-border -translate-x-1/2 hidden md:block"></div>
+
+    {% for milestone in milestones|default:"" %}
+    {% empty %}
+    <!-- Static fallback milestones -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12 stag">
+      <div class="md:text-right md:pr-12 reveal-l">
+        <span class="text-accent font-display text-4xl">2009</span>
+        <h3 class="text-white font-semibold mt-1 mb-2">Founded in Pune</h3>
+        <p class="text-muted text-sm leading-relaxed">Started as a small audio equipment workshop in Wadgaon Sheri, Pune, with a single focus — making professional-grade sound affordable.</p>
+      </div>
+      <div class="md:pl-12 reveal-r flex md:items-center">
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-full flex items-center justify-center mx-auto md:mx-0">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-12 stag">
+      <div class="md:pr-12 reveal-l flex md:items-center md:justify-end">
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-full flex items-center justify-center mx-auto md:mx-0">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+        </div>
+      </div>
+      <div class="md:pl-12 reveal-r">
+        <span class="text-accent font-display text-4xl">2013</span>
+        <h3 class="text-white font-semibold mt-1 mb-2">First 100 Clients</h3>
+        <p class="text-muted text-sm leading-relaxed">Hit our first 100 client milestone, serving DJ professionals, event companies, and auditoriums across Pune and surrounding districts.</p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-12 stag">
+      <div class="md:text-right md:pr-12 reveal-l">
+        <span class="text-accent font-display text-4xl">2017</span>
+        <h3 class="text-white font-semibold mt-1 mb-2">Pan India Expansion</h3>
+        <p class="text-muted text-sm leading-relaxed">Expanded delivery and installation services across India — Maharashtra, Karnataka, Gujarat, Rajasthan, Delhi NCR, and beyond.</p>
+      </div>
+      <div class="md:pl-12 reveal-r flex md:items-center">
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-full flex items-center justify-center mx-auto md:mx-0">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 stag">
+      <div class="md:pr-12 reveal-l flex md:items-center md:justify-end">
+        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-[0_0_30px_rgba(255,87,34,0.4)]">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+        </div>
+      </div>
+      <div class="md:pl-12 reveal-r">
+        <span class="text-accent font-display text-4xl">2024</span>
+        <h3 class="text-white font-semibold mt-1 mb-2">500+ Products Strong</h3>
+        <p class="text-muted text-sm leading-relaxed">Crossed 500+ products delivered, 200+ clients, and launched our next-generation subwoofer and amplifier series with upgraded components.</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ══ WHY CHOOSE US ══ -->
+{% if why_items %}
+<section class="border-t border-border bg-surface py-24">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="text-center mb-16 reveal">
+      <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">Why SB PRO-AUDIO</p>
+      <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none">Why Choose Us?</h2>
+      <p class="text-muted mt-4 max-w-xl mx-auto text-sm leading-relaxed">We combine quality engineering, modern technology, and industry expertise for reliable audio solutions.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 stag">
       {% for item in why_items %}
-      <div class="bg-cream border border-pebble rounded-2xl p-7 hover:border-accent/30 hover:shadow-md transition-all group card-lift">
-        <div class="w-12 h-12 bg-accentLight rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
+      <div class="bg-card border border-border rounded-2xl p-7 hover:border-accent hover:shadow-[0_20px_60px_rgba(255,87,34,0.08)] transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
           <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
         </div>
-        <h3 class="text-charcoal font-semibold mb-2">{{ item.title }}</h3>
-        <p class="text-stone text-sm leading-relaxed">{{ item.description }}</p>
+        <h3 class="text-white font-semibold mb-3">{{ item.title }}</h3>
+        <p class="text-muted text-sm leading-relaxed">{{ item.description }}</p>
       </div>
       {% endfor %}
     </div>
   </div>
 </section>
 {% endif %}
+
+<!-- ══ CLIENTS SERVED / USE CASES ══ -->
+<section class="max-w-7xl mx-auto px-5 py-24">
+  <div class="text-center mb-16 reveal">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">Who We Serve</p>
+    <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none">Built for Every Stage</h2>
+    <p class="text-muted mt-4 max-w-xl mx-auto text-sm">Whether it's a 50-person party or a 50,000-person concert — our systems deliver.</p>
+  </div>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 stag">
+    {% for client in clients_served|default:"" %}{% empty %}
+    <div class="bg-card border border-border rounded-2xl p-6 text-center hover:border-accent transition-all hover:-translate-y-1 group">
+      <div class="text-3xl mb-4">🎧</div>
+      <h3 class="text-white font-semibold mb-2 group-hover:text-accent transition-colors">DJ Professionals</h3>
+      <p class="text-muted text-xs leading-relaxed">Portable and rack-mount speaker systems for club nights, open-air events, and touring DJs.</p>
+    </div>
+    <div class="bg-card border border-border rounded-2xl p-6 text-center hover:border-accent transition-all hover:-translate-y-1 group">
+      <div class="text-3xl mb-4">🏟️</div>
+      <h3 class="text-white font-semibold mb-2 group-hover:text-accent transition-colors">Event Companies</h3>
+      <p class="text-muted text-xs leading-relaxed">Full-stack audio systems for weddings, corporate events, festivals, and large-format productions.</p>
+    </div>
+    <div class="bg-card border border-border rounded-2xl p-6 text-center hover:border-accent transition-all hover:-translate-y-1 group">
+      <div class="text-3xl mb-4">🏛️</div>
+      <h3 class="text-white font-semibold mb-2 group-hover:text-accent transition-colors">Auditoriums & Halls</h3>
+      <p class="text-muted text-xs leading-relaxed">Permanent installation systems with even coverage, low distortion, and long-term reliability.</p>
+    </div>
+    <div class="bg-card border border-border rounded-2xl p-6 text-center hover:border-accent transition-all hover:-translate-y-1 group">
+      <div class="text-3xl mb-4">🕌</div>
+      <h3 class="text-white font-semibold mb-2 group-hover:text-accent transition-colors">Religious Venues</h3>
+      <p class="text-muted text-xs leading-relaxed">Clear, intelligible PA systems for temples, churches, mosques, and community gathering spaces.</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ══ -->
+<section class="bg-accent py-20 relative overflow-hidden">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.07) 0%, transparent 60%);"></div>
+  <div class="max-w-4xl mx-auto px-5 text-center relative z-10 reveal">
+    <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none mb-5">Ready to Work Together?</h2>
+    <p class="text-white/75 text-base max-w-xl mx-auto mb-10 leading-relaxed">Have a project in mind? Let's talk about your venue, your requirements, and how SB PRO-AUDIO can deliver the perfect system for you.</p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 bg-white text-accent font-bold px-8 py-4 rounded-full hover:bg-orange-50 transition-colors text-sm">
+        Get in Touch →
+      </a>
+      {% if site_settings and site_settings.phone_primary %}
+      <a href="tel:{{ site_settings.phone_primary }}" class="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition-colors text-sm">
+        Call: {{ site_settings.phone_primary }}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
 
 {% endblock %}

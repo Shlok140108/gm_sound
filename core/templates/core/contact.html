@@ -1,123 +1,253 @@
 {% extends 'core/base.html' %}
-{% block title %}Contact Us | GM SOUND{% endblock %}
+{% block title %}Contact Us | GM AUDIO{% endblock %}
 
 {% block content %}
 
-<div class="bg-charcoal py-24 relative overflow-hidden">
-  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 80% 30%, #E8460A, transparent 55%)"></div>
-  <div class="max-w-7xl mx-auto px-4 relative z-10">
-    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">Reach Out</span>
-    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">Contact Us</h1>
-    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+<!-- ══ PAGE HERO ══ -->
+<div class="relative bg-surface py-28 overflow-hidden border-b border-border">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 80% 30%, rgba(255,87,34,0.07) 0%, transparent 60%);"></div>
+  <span class="absolute right-0 top-1/2 -translate-y-1/2 font-display text-[clamp(60px,15vw,190px)] text-white/[0.025] leading-none select-none pointer-events-none tracking-widest">CONTACT</span>
+  <div class="max-w-7xl mx-auto px-5 relative z-10">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-5">Reach Out</p>
+    <h1 class="font-display text-[clamp(52px,9vw,110px)] text-white leading-none mb-6">Let's Talk Sound</h1>
+    <p class="text-muted text-base max-w-xl leading-relaxed mb-6">Tell us about your event, venue, or project — our team responds within hours with a detailed quote.</p>
+    <div class="flex items-center gap-2 text-sm text-muted">
       <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
-      <span>/</span><span class="text-white/70">Contact</span>
+      <span class="text-border">/</span>
+      <span class="text-white">Contact</span>
     </div>
   </div>
 </div>
 
-<section class="max-w-7xl mx-auto px-4 py-28 grid md:grid-cols-5 gap-16">
-  <!-- INFO -->
-  <div class="md:col-span-2 space-y-6 reveal-left">
-    <div>
-      <h2 class="font-display text-4xl font-bold text-charcoal mb-3">Get In Touch</h2>
-      <p class="text-stone text-sm leading-relaxed">Looking for the best sound system manufacturer? Contact us today for professional audio solutions tailored to your needs.</p>
-    </div>
-
-    <div class="bg-white border border-pebble rounded-2xl p-7 space-y-6">
-      {% if site_settings and site_settings.address %}
-      <div class="flex gap-4">
-        <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </div>
-        <div>
-          <p class="text-charcoal font-semibold text-sm mb-1">Address</p>
-          <p class="text-stone text-sm leading-relaxed">{{ site_settings.address }}</p>
-        </div>
-      </div>
-      {% endif %}
+<!-- ══ QUICK CONTACT CARDS ══ -->
+<section class="border-b border-border bg-surface">
+  <div class="max-w-7xl mx-auto px-5 py-12">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 stag">
 
       {% if site_settings and site_settings.phone_primary %}
-      <div class="flex gap-4">
-        <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center flex-shrink-0">
-          <svg class="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+      <a href="tel:{{ site_settings.phone_primary }}" class="group bg-card border border-border rounded-2xl p-6 hover:border-accent transition-all hover:-translate-y-1 block">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
+          <svg class="w-5 h-5 text-accent group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
         </div>
-        <div>
-          <p class="text-charcoal font-semibold text-sm mb-1">Phone</p>
-          <a href="tel:{{ site_settings.phone_primary }}" class="text-stone text-sm hover:text-accent transition-colors block">{{ site_settings.phone_primary }}</a>
-          {% if site_settings.phone_secondary %}<a href="tel:{{ site_settings.phone_secondary }}" class="text-stone text-sm hover:text-accent transition-colors block">{{ site_settings.phone_secondary }}</a>{% endif %}
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Primary Line</p>
+        <p class="text-white font-semibold text-sm group-hover:text-accent transition-colors">{{ site_settings.phone_primary }}</p>
+      </a>
+      {% endif %}
+
+      {% if site_settings and site_settings.phone_secondary %}
+      <a href="tel:{{ site_settings.phone_secondary }}" class="group bg-card border border-border rounded-2xl p-6 hover:border-accent transition-all hover:-translate-y-1 block">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
+          <svg class="w-5 h-5 text-accent group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
         </div>
-      </div>
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Secondary Line</p>
+        <p class="text-white font-semibold text-sm group-hover:text-accent transition-colors">{{ site_settings.phone_secondary }}</p>
+      </a>
       {% endif %}
 
       {% if site_settings and site_settings.email %}
-      <div class="flex gap-4">
-        <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center flex-shrink-0">
-          <svg class="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+      <a href="mailto:{{ site_settings.email }}" class="group bg-card border border-border rounded-2xl p-6 hover:border-accent transition-all hover:-translate-y-1 block">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
+          <svg class="w-5 h-5 text-accent group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+        </div>
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Email Us</p>
+        <p class="text-white font-semibold text-sm group-hover:text-accent transition-colors break-all">{{ site_settings.email }}</p>
+      </a>
+      {% endif %}
+
+      <div class="group bg-card border border-border rounded-2xl p-6 hover:border-accent transition-all hover:-translate-y-1">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
+          <svg class="w-5 h-5 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Office Hours</p>
+        <p class="text-white font-semibold text-sm">Mon–Sat: 9AM – 7PM</p>
+        <p class="text-muted text-xs mt-1">Sunday: Closed</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ MAIN CONTACT SECTION ══ -->
+<section class="max-w-7xl mx-auto px-5 py-24 grid md:grid-cols-5 gap-16">
+
+  <!-- LEFT INFO -->
+  <div class="md:col-span-2 reveal-l">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-5">Get In Touch</p>
+    <h2 class="font-display text-[clamp(32px,4vw,52px)] text-white leading-none mb-6">Start Your Production</h2>
+    <p class="text-muted text-sm leading-relaxed mb-10">Reach out to discuss your event requirements. We provide complete technical riders, acoustic mapping, and detailed quotes — all free of charge.</p>
+
+    <!-- Contact Details -->
+    <div class="space-y-5 mb-10">
+      {% if site_settings and site_settings.address %}
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         </div>
         <div>
-          <p class="text-charcoal font-semibold text-sm mb-1">Email</p>
-          <a href="mailto:{{ site_settings.email }}" class="text-stone text-sm hover:text-accent transition-colors">{{ site_settings.email }}</a>
+          <p class="text-muted text-xs uppercase tracking-wider mb-1">Address</p>
+          <p class="text-text text-sm leading-relaxed">{{ site_settings.address }}</p>
         </div>
       </div>
       {% endif %}
 
-      <div class="flex gap-4">
-        <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center flex-shrink-0">
+      {% if site_settings and site_settings.working_hours %}
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
           <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
-          <p class="text-charcoal font-semibold text-sm mb-1">Working Hours</p>
-          <p class="text-stone text-sm">{{ site_settings.working_hours|linebreaks }}</p>
-          
+          <p class="text-muted text-xs uppercase tracking-wider mb-1">Working Hours</p>
+          <p class="text-text text-sm leading-relaxed">{{ site_settings.working_hours|linebreaks }}</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- What to expect -->
+    <div class="bg-card border border-border rounded-2xl p-6">
+      <h3 class="text-white font-semibold text-sm mb-4">What Happens Next?</h3>
+      <div class="space-y-4">
+        <div class="flex items-start gap-3">
+          <span class="w-6 h-6 bg-accent rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+          <p class="text-muted text-xs leading-relaxed">We receive your message and review your requirements within the hour.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="w-6 h-6 bg-accent/20 border border-accent/30 rounded-full flex items-center justify-center text-accent text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+          <p class="text-muted text-xs leading-relaxed">Our team calls you back to discuss details — venue, audience, date, and preferences.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="w-6 h-6 bg-accent/20 border border-accent/30 rounded-full flex items-center justify-center text-accent text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+          <p class="text-muted text-xs leading-relaxed">You receive a detailed quote with full equipment list and pricing — no hidden charges.</p>
         </div>
       </div>
     </div>
   </div>
 
   <!-- FORM -->
-  <div class="md:col-span-3 reveal-right">
-    <div class="bg-white border border-pebble rounded-2xl p-10">
-      <h3 class="font-display text-3xl font-bold text-charcoal mb-8">Send Us a Message</h3>
+  <div class="md:col-span-3 reveal-r">
+    <div class="bg-card border border-border rounded-2xl p-10">
+      <h3 class="font-display text-3xl text-white mb-2">Send Us a Message</h3>
+      <p class="text-muted text-sm mb-8">We respond within 2–4 hours on business days.</p>
+
+      {% if messages %}
+      {% for msg in messages %}
+      <div class="bg-accent/10 border border-accent/30 text-accent text-sm rounded-xl p-4 mb-6 flex items-center gap-3">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        {{ msg }}
+      </div>
+      {% endfor %}
+      {% endif %}
+
       <form method="post" class="space-y-5">
         {% csrf_token %}
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label class="text-xs font-semibold text-stone uppercase tracking-widest mb-2 block">Full Name *</label>
+            <label class="text-xs font-semibold text-muted uppercase tracking-widest mb-2 block">Full Name *</label>
             {{ form.name }}
-            {% if form.name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.name.errors.0 }}</p>{% endif %}
+            {% if form.name.errors %}<p class="text-red-400 text-xs mt-1">{{ form.name.errors.0 }}</p>{% endif %}
           </div>
           <div>
-            <label class="text-xs font-semibold text-stone uppercase tracking-widest mb-2 block">Email Address *</label>
+            <label class="text-xs font-semibold text-muted uppercase tracking-widest mb-2 block">Email Address *</label>
             {{ form.email }}
-            {% if form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+            {% if form.email.errors %}<p class="text-red-400 text-xs mt-1">{{ form.email.errors.0 }}</p>{% endif %}
           </div>
         </div>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label class="text-xs font-semibold text-stone uppercase tracking-widest mb-2 block">Phone Number</label>
+            <label class="text-xs font-semibold text-muted uppercase tracking-widest mb-2 block">Phone Number</label>
             {{ form.phone }}
           </div>
           <div>
-            <label class="text-xs font-semibold text-stone uppercase tracking-widest mb-2 block">Subject</label>
+            <label class="text-xs font-semibold text-muted uppercase tracking-widest mb-2 block">Enquiry Type</label>
             {{ form.subject }}
           </div>
         </div>
         <div>
-          <label class="text-xs font-semibold text-stone uppercase tracking-widest mb-2 block">Message *</label>
+          <label class="text-xs font-semibold text-muted uppercase tracking-widest mb-2 block">Message *</label>
           {{ form.message }}
-          {% if form.message.errors %}<p class="text-red-500 text-xs mt-1">{{ form.message.errors.0 }}</p>{% endif %}
+          {% if form.message.errors %}<p class="text-red-400 text-xs mt-1">{{ form.message.errors.0 }}</p>{% endif %}
         </div>
-        <button type="submit" class="w-full bg-accent hover:bg-orange-700 text-white font-semibold py-3.5 rounded-xl transition-colors text-sm">
-          Send Message →
+        <button type="submit" class="w-full bg-accent hover:bg-orange-600 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
+          Send Message
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </button>
       </form>
     </div>
   </div>
 </section>
 
+<!-- ══ FAQ ══ -->
+<section class="border-t border-border bg-surface py-24">
+  <div class="max-w-4xl mx-auto px-5">
+    <div class="text-center mb-16 reveal">
+      <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">Common Questions</p>
+      <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none">Frequently Asked</h2>
+    </div>
+
+    <div class="space-y-4 stag" id="faq">
+      {% for faq in faqs|default:"" %}{% empty %}
+
+      <div class="faq-item bg-card border border-border rounded-2xl overflow-hidden">
+        <button class="faq-btn w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="text-white font-semibold text-sm">What areas do you deliver and install in?</span>
+          <svg class="w-5 h-5 text-accent flex-shrink-0 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-body hidden px-7 pb-5">
+          <p class="text-muted text-sm leading-relaxed">We deliver and provide installation services across all major Indian cities and states including Maharashtra, Karnataka, Gujarat, Rajasthan, Delhi NCR, Tamil Nadu, and more. Call us to confirm your location.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-card border border-border rounded-2xl overflow-hidden">
+        <button class="faq-btn w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="text-white font-semibold text-sm">Do you offer rental services or only sales?</span>
+          <svg class="w-5 h-5 text-accent flex-shrink-0 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-body hidden px-7 pb-5">
+          <p class="text-muted text-sm leading-relaxed">We offer both. You can rent complete audio and lighting systems for your event, or purchase our manufactured products. We also offer permanent installation packages with AMC support.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-card border border-border rounded-2xl overflow-hidden">
+        <button class="faq-btn w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="text-white font-semibold text-sm">How quickly can you set up for an event?</span>
+          <svg class="w-5 h-5 text-accent flex-shrink-0 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-body hidden px-7 pb-5">
+          <p class="text-muted text-sm leading-relaxed">Setup time depends on the scale of the event. A small club or party setup takes 2–3 hours. A large-scale concert or festival production may require a full day. We always arrive early to ensure everything is tested before the event starts.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-card border border-border rounded-2xl overflow-hidden">
+        <button class="faq-btn w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="text-white font-semibold text-sm">Do your products come with a warranty?</span>
+          <svg class="w-5 h-5 text-accent flex-shrink-0 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-body hidden px-7 pb-5">
+          <p class="text-muted text-sm leading-relaxed">Yes. All SB PRO-AUDIO manufactured products come with warranty coverage. Duration varies by product type. We also offer extended AMC (Annual Maintenance Contract) plans for permanent installations.</p>
+        </div>
+      </div>
+
+      <div class="faq-item bg-card border border-border rounded-2xl overflow-hidden">
+        <button class="faq-btn w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="text-white font-semibold text-sm">Can I get a custom audio system built to spec?</span>
+          <svg class="w-5 h-5 text-accent flex-shrink-0 transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="faq-body hidden px-7 pb-5">
+          <p class="text-muted text-sm leading-relaxed">Absolutely. We manufacture custom speaker enclosures, amplifier racks, and complete audio systems built to your exact specifications. Contact us with your requirements and we'll design a solution for your venue or use case.</p>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══ MAP ══ -->
 {% if site_settings and site_settings.map_embed_url %}
-<div class="h-80 border-t border-pebble">
-  <iframe src="{{ site_settings.map_embed_url }}" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen loading="lazy"></iframe>
+<div class="border-t border-border" style="height:380px;">
+  <iframe src="{{ site_settings.map_embed_url }}" width="100%" height="100%" frameborder="0"
+    style="border:0;filter:grayscale(1) brightness(0.8) contrast(1.1);"
+    allowfullscreen loading="lazy" title="SB PRO-AUDIO Location"></iframe>
 </div>
 {% endif %}
 
@@ -125,10 +255,27 @@
 
 {% block extra_js %}
 <script>
-  // Style Django form inputs
-  document.querySelectorAll('input[type=text], input[type=email], input[type=tel], textarea, select').forEach(el => {
-    el.classList.add('field-input');
-    if (el.tagName === 'TEXTAREA') el.style.minHeight = '130px';
+  // Style Django form inputs to match dark theme
+  document.querySelectorAll('input[type=text], input[type=email], input[type=tel], textarea, select').forEach(function(el) {
+    el.style.cssText = 'width:100%;background:#1a1a1a;border:1px solid #2a2a2a;color:#efefef;padding:11px 14px;border-radius:10px;font-size:13px;outline:none;font-family:inherit;transition:border-color 0.2s;';
+    el.addEventListener('focus', function(){ this.style.borderColor = '#FF5722'; });
+    el.addEventListener('blur', function(){ this.style.borderColor = '#2a2a2a'; });
+    if (el.tagName === 'TEXTAREA') { el.style.minHeight = '130px'; el.style.resize = 'vertical'; }
   });
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    var body = btn.nextElementSibling;
+    var icon = btn.querySelector('.faq-icon');
+    var isOpen = !body.classList.contains('hidden');
+    // close all
+    document.querySelectorAll('.faq-body').forEach(function(b){ b.classList.add('hidden'); });
+    document.querySelectorAll('.faq-icon').forEach(function(i){ i.style.transform = ''; });
+    // open clicked if was closed
+    if (!isOpen) {
+      body.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+    }
+  }
 </script>
 {% endblock %}

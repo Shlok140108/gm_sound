@@ -1,53 +1,219 @@
 {% extends 'core/base.html' %}
-{% block title %}Services | GM SOUND{% endblock %}
+{% block title %}Services | GM AUDIO{% endblock %}
 
 {% block content %}
 
-<div class="bg-charcoal py-24 relative overflow-hidden">
-  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 30% 60%, #E8460A, transparent 55%)"></div>
-  <div class="max-w-7xl mx-auto px-4 relative z-10">
-    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">What We Offer</span>
-    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">Our Services</h1>
-    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+<!-- ══ PAGE HERO ══ -->
+<div class="relative bg-surface py-28 overflow-hidden border-b border-border">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 60%, rgba(255,87,34,0.07) 0%, transparent 60%);"></div>
+  <span class="absolute right-0 top-1/2 -translate-y-1/2 font-display text-[clamp(80px,18vw,220px)] text-white/[0.025] leading-none select-none pointer-events-none tracking-widest">SERVICES</span>
+  <div class="max-w-7xl mx-auto px-5 relative z-10">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-5">What We Offer</p>
+    <h1 class="font-display text-[clamp(52px,9vw,110px)] text-white leading-none mb-6">Our Services</h1>
+    <p class="text-muted text-base max-w-xl leading-relaxed mb-6">From intimate weddings to massive concerts — we deliver complete professional audio and production services.</p>
+    <div class="flex items-center gap-2 text-sm text-muted">
       <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
-      <span>/</span><span class="text-white/70">Services</span>
+      <span class="text-border">/</span>
+      <span class="text-white">Services</span>
     </div>
   </div>
 </div>
 
-<section class="max-w-7xl mx-auto px-4 py-28">
+<!-- ══ SERVICES GRID ══ -->
+<section class="max-w-7xl mx-auto px-5 py-24">
   {% if services %}
-  <div class="grid md:grid-cols-2 gap-10">
+  <div class="grid md:grid-cols-2 gap-8">
     {% for service in services %}
-    <div class="group bg-white border border-pebble rounded-2xl overflow-hidden hover:border-accent/30 hover:shadow-xl transition-all duration-400 flex flex-col md:flex-row reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
+    <div class="group bg-card border border-border rounded-2xl overflow-hidden hover:border-accent hover:shadow-[0_24px_60px_rgba(255,87,34,0.1)] transition-all duration-400 hover:-translate-y-1 reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
       {% if service.image %}
-      <div class="md:w-52 h-52 md:h-auto overflow-hidden flex-shrink-0">
+      <div class="h-56 overflow-hidden relative">
         <img src="{{ service.image.url }}" alt="{{ service.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <span class="absolute bottom-4 left-5 text-white font-display text-2xl">{{ service.title }}</span>
       </div>
       {% endif %}
-      <div class="p-8 flex flex-col justify-center">
-        <div class="w-10 h-10 bg-accentLight rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+      <div class="p-8">
+        {% if not service.image %}
+        <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+          <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
         </div>
-        <h3 class="text-charcoal font-semibold text-xl mb-3 group-hover:text-accent transition-colors">{{ service.title }}</h3>
-        <p class="text-stone text-sm leading-relaxed">{{ service.description }}</p>
-        <a href="{% url 'contact' %}" class="inline-flex items-center gap-1 text-accent text-sm font-semibold mt-5 hover:gap-3 transition-all">Enquire Now →</a>
+        <h3 class="text-white font-display text-2xl mb-3 group-hover:text-accent transition-colors">{{ service.title }}</h3>
+        {% endif %}
+        <p class="text-muted text-sm leading-relaxed mb-6">{{ service.description }}</p>
+
+        <!-- Feature bullets (static, relevant to audio services) -->
+        <div class="space-y-2 mb-6">
+          {% if forloop.counter == 1 %}
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Professional-grade speaker arrays</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Line array & point-source setups</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Acoustic analysis included</div>
+          {% elif forloop.counter == 2 %}
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> LED moving head fixtures</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Laser & strobe effects</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> DMX-controlled rigs</div>
+          {% elif forloop.counter == 3 %}
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> High-power subwoofer systems</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Club & festival grade</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Rack-mount amplifier packages</div>
+          {% else %}
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Site survey & planning</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Professional installation team</div>
+          <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Post-installation support</div>
+          {% endif %}
+        </div>
+
+        <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 text-accent text-sm font-bold uppercase tracking-wider hover:gap-4 transition-all">
+          Enquire Now
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
       </div>
     </div>
     {% endfor %}
   </div>
   {% else %}
-  <div class="text-center py-24 text-stone">
-    <p>No services found. Add some from the admin panel.</p>
+  <!-- Fallback if no services in DB -->
+  <div class="grid md:grid-cols-2 gap-8">
+    {% for svc in default_services|default:"" %}{% empty %}
+
+    <div class="group bg-card border border-border rounded-2xl p-8 hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+        <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+      </div>
+      <h3 class="text-white font-display text-2xl mb-3 group-hover:text-accent transition-colors">Sound System Rental</h3>
+      <p class="text-muted text-sm leading-relaxed mb-5">Professional PA systems, subwoofers, and monitors available for rent for any event size — from small gatherings to stadium-scale concerts.</p>
+      <div class="space-y-2 mb-6">
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Line array & point source systems</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Delivery, setup & teardown included</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> On-site engineer available</div>
+      </div>
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 text-accent text-sm font-bold uppercase tracking-wider hover:gap-4 transition-all">Enquire Now <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+    </div>
+
+    <div class="group bg-card border border-border rounded-2xl p-8 hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+        <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+      </div>
+      <h3 class="text-white font-display text-2xl mb-3 group-hover:text-accent transition-colors">Stage Lighting</h3>
+      <p class="text-muted text-sm leading-relaxed mb-5">Full-scale stage lighting rigs including moving heads, LED washes, laser systems, and strobe fixtures — programmable and DMX controlled.</p>
+      <div class="space-y-2 mb-6">
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Moving head & LED par fixtures</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Laser & atmospheric effects</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Lighting programmer on-site</div>
+      </div>
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 text-accent text-sm font-bold uppercase tracking-wider hover:gap-4 transition-all">Enquire Now <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+    </div>
+
+    <div class="group bg-card border border-border rounded-2xl p-8 hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+        <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+      </div>
+      <h3 class="text-white font-display text-2xl mb-3 group-hover:text-accent transition-colors">DJ Equipment Supply</h3>
+      <p class="text-muted text-sm leading-relaxed mb-5">Rent or buy professional DJ equipment — controllers, mixers, CDJs, monitors, and complete DJ setups for clubs, events, and studios.</p>
+      <div class="space-y-2 mb-6">
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> CDJ / controller packages</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Studio monitor rentals</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Full booth setups available</div>
+      </div>
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 text-accent text-sm font-bold uppercase tracking-wider hover:gap-4 transition-all">Enquire Now <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+    </div>
+
+    <div class="group bg-card border border-border rounded-2xl p-8 hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="w-12 h-12 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-accent transition-colors">
+        <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      </div>
+      <h3 class="text-white font-display text-2xl mb-3 group-hover:text-accent transition-colors">Permanent Installation</h3>
+      <p class="text-muted text-sm leading-relaxed mb-5">End-to-end fixed audio installations for auditoriums, clubs, temples, hotels, restaurants, and commercial spaces — designed to last.</p>
+      <div class="space-y-2 mb-6">
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Site acoustic survey</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> Custom cable & mount work</div>
+        <div class="flex items-center gap-2 text-xs text-muted"><span class="text-accent">✓</span> AMC & maintenance packages</div>
+      </div>
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 text-accent text-sm font-bold uppercase tracking-wider hover:gap-4 transition-all">Enquire Now <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+    </div>
+
+    {% endfor %}
   </div>
   {% endif %}
 </section>
 
-<section class="bg-accent py-20 reveal">
-  <div class="max-w-4xl mx-auto px-4 text-center text-white">
-    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Need a Custom Audio Solution?</h2>
-    <p class="text-white/75 mb-9 text-lg">We design tailored audio systems for your specific venue, event, or installation requirements.</p>
-    <a href="{% url 'contact' %}" class="inline-block bg-white text-accent font-bold px-9 py-3.5 rounded-full hover:bg-orange-50 transition-colors">Contact Us Today</a>
+<!-- ══ PROCESS ══ -->
+<section class="border-y border-border bg-surface py-24">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="text-center mb-16 reveal">
+      <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">How It Works</p>
+      <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none">Our Process</h2>
+      <p class="text-muted mt-4 max-w-lg mx-auto text-sm">Simple, transparent, professional — from first call to final sound check.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 stag">
+      <div class="text-center reveal">
+        <div class="w-16 h-16 bg-card border border-border rounded-2xl flex items-center justify-center mx-auto mb-5 relative">
+          <span class="font-display text-3xl text-accent">01</span>
+          <div class="absolute -right-6 top-1/2 -translate-y-1/2 w-6 h-px bg-border hidden lg:block"></div>
+        </div>
+        <h3 class="text-white font-semibold mb-2">Consultation</h3>
+        <p class="text-muted text-xs leading-relaxed">Tell us about your event, venue size, audience, and requirements. We listen and advise.</p>
+      </div>
+      <div class="text-center reveal">
+        <div class="w-16 h-16 bg-card border border-border rounded-2xl flex items-center justify-center mx-auto mb-5 relative">
+          <span class="font-display text-3xl text-accent">02</span>
+          <div class="absolute -right-6 top-1/2 -translate-y-1/2 w-6 h-px bg-border hidden lg:block"></div>
+        </div>
+        <h3 class="text-white font-semibold mb-2">Custom Quote</h3>
+        <p class="text-muted text-xs leading-relaxed">Receive a detailed, transparent quote with equipment list, delivery, and setup costs.</p>
+      </div>
+      <div class="text-center reveal">
+        <div class="w-16 h-16 bg-card border border-border rounded-2xl flex items-center justify-center mx-auto mb-5 relative">
+          <span class="font-display text-3xl text-accent">03</span>
+          <div class="absolute -right-6 top-1/2 -translate-y-1/2 w-6 h-px bg-border hidden lg:block"></div>
+        </div>
+        <h3 class="text-white font-semibold mb-2">Setup & Test</h3>
+        <p class="text-muted text-xs leading-relaxed">Our team arrives, installs, and runs full sound checks well before your event begins.</p>
+      </div>
+      <div class="text-center reveal">
+        <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-[0_0_30px_rgba(255,87,34,0.3)]">
+          <span class="font-display text-3xl text-white">04</span>
+        </div>
+        <h3 class="text-white font-semibold mb-2">Event Day</h3>
+        <p class="text-muted text-xs leading-relaxed">We stay on-site for the duration — monitoring, adjusting, and ensuring flawless audio throughout.</p>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- ══ EVENT TYPES ══ -->
+<section class="max-w-7xl mx-auto px-5 py-24">
+  <div class="text-center mb-16 reveal">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">Events We Cover</p>
+    <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none">Every Event.<br>Every Scale.</h2>
+  </div>
+  <div class="flex flex-wrap justify-center gap-3 stag">
+    {% for event in "Weddings|Corporate Events|DJ Nights|Concerts|Festivals|Award Shows|Product Launches|Religious Events|College Fests|Club Nights|Private Parties|Conferences"|split:"|" %}{% empty %}
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">💒 Weddings</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🏢 Corporate Events</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🎧 DJ Nights</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🎤 Concerts</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🎡 Festivals</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🏆 Award Shows</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🚀 Product Launches</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🕌 Religious Events</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🎓 College Fests</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🎉 Private Parties</span>
+    <span class="inline-flex items-center gap-2 bg-card border border-border rounded-full px-5 py-2.5 text-sm text-muted hover:border-accent hover:text-accent transition-colors cursor-default">🎙 Conferences</span>
+    <span class="inline-flex items-center gap-2 bg-accent rounded-full px-5 py-2.5 text-sm text-white font-semibold">+ More</span>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="bg-accent py-20 relative overflow-hidden">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.07) 0%, transparent 60%);"></div>
+  <div class="max-w-4xl mx-auto px-5 text-center relative z-10 reveal">
+    <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none mb-5">Need a Custom Audio Solution?</h2>
+    <p class="text-white/75 text-base max-w-lg mx-auto mb-10">We design tailored audio systems for your specific venue, event, or permanent installation requirements.</p>
+    <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 bg-white text-accent font-bold px-9 py-4 rounded-full hover:bg-orange-50 transition-colors">
+      Contact Us Today →
+    </a>
+  </div>
+</section>
+
 {% endblock %}

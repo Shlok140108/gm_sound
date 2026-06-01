@@ -1,59 +1,209 @@
 {% extends 'core/base.html' %}
-{% block title %}Testimonials | GM SOUND{% endblock %}
+{% block title %}Testimonials | GM AUDIO{% endblock %}
 
 {% block content %}
 
-<div class="bg-charcoal py-24 relative overflow-hidden">
-  <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 50% 70%, #E8460A, transparent 50%)"></div>
-  <div class="max-w-7xl mx-auto px-4 relative z-10">
-    <span class="line-accent text-accent text-xs font-semibold uppercase tracking-[3px] mb-4 block">Client Stories</span>
-    <h1 class="font-display text-6xl md:text-7xl font-bold text-white">Testimonials</h1>
-    <div class="flex items-center gap-2 mt-5 text-sm text-white/40">
+<!-- ══ PAGE HERO ══ -->
+<div class="relative bg-surface py-28 overflow-hidden border-b border-border">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 70%, rgba(255,87,34,0.07) 0%, transparent 60%);"></div>
+  <span class="absolute right-0 top-1/2 -translate-y-1/2 font-display text-[clamp(60px,15vw,190px)] text-white/[0.025] leading-none select-none pointer-events-none tracking-widest">REVIEWS</span>
+  <div class="max-w-7xl mx-auto px-5 relative z-10">
+    <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-5">Client Stories</p>
+    <h1 class="font-display text-[clamp(52px,9vw,110px)] text-white leading-none mb-6">What Our Clients Say</h1>
+    <p class="text-muted text-base max-w-xl leading-relaxed mb-6">Real reviews from real events. Hundreds of satisfied clients across India trust SB PRO-AUDIO.</p>
+    <div class="flex items-center gap-2 text-sm text-muted">
       <a href="{% url 'home' %}" class="hover:text-accent transition-colors">Home</a>
-      <span>/</span><span class="text-white/70">Testimonials</span>
+      <span class="text-border">/</span>
+      <span class="text-white">Testimonials</span>
     </div>
   </div>
 </div>
 
-<section class="max-w-7xl mx-auto px-4 py-28">
+<!-- ══ SUMMARY STATS ══ -->
+<section class="border-b border-border bg-surface">
+  <div class="max-w-7xl mx-auto px-5 py-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 stag">
+      <div class="text-center">
+        <div class="font-display text-5xl text-accent mb-1">4.9<span class="text-3xl">★</span></div>
+        <div class="text-muted text-xs uppercase tracking-wider">Average Rating</div>
+      </div>
+      <div class="text-center border-x border-border">
+        <div class="font-display text-5xl text-white mb-1"><span class="count-up" data-target="200" data-suffix="+">200+</span></div>
+        <div class="text-muted text-xs uppercase tracking-wider">Happy Clients</div>
+      </div>
+      <div class="text-center border-r border-border">
+        <div class="font-display text-5xl text-white mb-1"><span class="count-up" data-target="500" data-suffix="+">500+</span></div>
+        <div class="text-muted text-xs uppercase tracking-wider">Events Delivered</div>
+      </div>
+      <div class="text-center">
+        <div class="font-display text-5xl text-accent mb-1">100<span class="text-3xl">%</span></div>
+        <div class="text-muted text-xs uppercase tracking-wider">Recommend Us</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS GRID ══ -->
+<section class="max-w-7xl mx-auto px-5 py-24">
   {% if testimonials %}
-  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for t in testimonials %}
-    <div class="bg-white border border-pebble rounded-2xl p-8 flex flex-col card-lift reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
+    <div class="bg-card border border-border rounded-2xl p-8 flex flex-col hover:border-accent hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(255,87,34,0.08)] transition-all reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
+      <!-- Stars -->
       <div class="flex gap-1 mb-5">
         {% for i in "12345" %}
-        <span class="text-xl {% if forloop.counter <= t.rating %}text-accent{% else %}text-pebble{% endif %}">★</span>
+        <span class="text-xl {% if forloop.counter <= t.rating %}text-accent{% else %}text-border{% endif %}">★</span>
         {% endfor %}
       </div>
-      <p class="text-stone text-sm leading-relaxed flex-1">"{{ t.message }}"</p>
-      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-pebble">
+
+      <!-- Quote -->
+      <div class="relative flex-1">
+        <span class="absolute -top-2 -left-1 font-display text-6xl text-accent/10 leading-none select-none">"</span>
+        <p class="text-muted text-sm leading-relaxed relative z-10 pl-4">"{{ t.message }}"</p>
+      </div>
+
+      <!-- Author -->
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-border">
         {% if t.photo %}
-        <img src="{{ t.photo.url }}" alt="{{ t.name }}" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
+        <img src="{{ t.photo.url }}" alt="{{ t.name }}" class="w-12 h-12 rounded-full object-cover flex-shrink-0 border-2 border-accent">
         {% else %}
-        <div class="w-12 h-12 rounded-full bg-accentLight flex items-center justify-center text-accent font-bold flex-shrink-0">
-          {{ t.name|first|upper }}
-        </div>
+        <div class="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center text-accent font-display text-xl flex-shrink-0">{{ t.name|first|upper }}</div>
         {% endif %}
         <div>
-          <p class="text-charcoal font-semibold text-sm">{{ t.name }}</p>
-          <p class="text-stone text-xs mt-0.5">{% if t.designation %}{{ t.designation }}{% if t.company %}, {% endif %}{% endif %}{{ t.company }}</p>
+          <p class="text-white font-semibold text-sm">{{ t.name }}</p>
+          <p class="text-muted text-xs mt-0.5">{% if t.designation %}{{ t.designation }}{% if t.company %}, {% endif %}{% endif %}{{ t.company }}</p>
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
+
   {% else %}
-  <div class="text-center py-24 text-stone reveal">
-    <p>No testimonials yet. Check back soon!</p>
+  <!-- Placeholder cards until admin adds testimonials -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for t in placeholder_testimonials|default:"" %}{% empty %}
+
+    <div class="bg-card border border-border rounded-2xl p-8 flex flex-col hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="flex gap-1 mb-5">{% for i in "12345" %}<span class="text-xl text-accent">★</span>{% endfor %}</div>
+      <p class="text-muted text-sm leading-relaxed flex-1">"SB PRO-AUDIO delivered a flawless sound setup for our wedding reception. The bass was tight, the vocals were crystal clear, and the whole team was incredibly professional throughout."</p>
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-border">
+        <div class="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center text-accent font-display text-xl">R</div>
+        <div><p class="text-white font-semibold text-sm">Rahul Sharma</p><p class="text-muted text-xs">Event Organiser, Pune</p></div>
+      </div>
+    </div>
+
+    <div class="bg-card border border-border rounded-2xl p-8 flex flex-col hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="flex gap-1 mb-5">{% for i in "12345" %}<span class="text-xl text-accent">★</span>{% endfor %}</div>
+      <p class="text-muted text-sm leading-relaxed flex-1">"We've used SB PRO-AUDIO for our annual corporate conference for the last 4 years. Never once had an issue. The sound coverage across our 800-seat hall is simply outstanding."</p>
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-border">
+        <div class="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center text-accent font-display text-xl">P</div>
+        <div><p class="text-white font-semibold text-sm">Priya Mehta</p><p class="text-muted text-xs">Operations Head, TechCorp India</p></div>
+      </div>
+    </div>
+
+    <div class="bg-card border border-border rounded-2xl p-8 flex flex-col hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="flex gap-1 mb-5">{% for i in "12345" %}<span class="text-xl text-accent">★</span>{% endfor %}</div>
+      <p class="text-muted text-sm leading-relaxed flex-1">"As a touring DJ, I need gear I can trust. SB PRO-AUDIO subwoofers and tops handle 6-hour sets without breaking a sweat. The sound quality speaks for itself on the dance floor."</p>
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-border">
+        <div class="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center text-accent font-display text-xl">A</div>
+        <div><p class="text-white font-semibold text-sm">DJ Arjun K.</p><p class="text-muted text-xs">Professional DJ, Mumbai</p></div>
+      </div>
+    </div>
+
+    <div class="bg-card border border-border rounded-2xl p-8 flex flex-col hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="flex gap-1 mb-5">{% for i in "12345" %}<span class="text-xl text-accent">★</span>{% endfor %}</div>
+      <p class="text-muted text-sm leading-relaxed flex-1">"Our temple installed a permanent PA from SB PRO-AUDIO last year. Even with 2,000 people in attendance during festivals, the sound reaches every corner perfectly. Worth every rupee."</p>
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-border">
+        <div class="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center text-accent font-display text-xl">S</div>
+        <div><p class="text-white font-semibold text-sm">Suresh Patil</p><p class="text-muted text-xs">Temple Trustee, Nashik</p></div>
+      </div>
+    </div>
+
+    <div class="bg-card border border-border rounded-2xl p-8 flex flex-col hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="flex gap-1 mb-5">{% for i in "1234" %}<span class="text-xl text-accent">★</span>{% endfor %}<span class="text-xl text-border">★</span></div>
+      <p class="text-muted text-sm leading-relaxed flex-1">"Rented a complete DJ system for our college annual fest. Arrived on time, looked premium, sounded incredible. The team stayed for the full 8-hour event. Will definitely book again."</p>
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-border">
+        <div class="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center text-accent font-display text-xl">N</div>
+        <div><p class="text-white font-semibold text-sm">Neha Joshi</p><p class="text-muted text-xs">Student Cultural Head, Pune University</p></div>
+      </div>
+    </div>
+
+    <div class="bg-card border border-border rounded-2xl p-8 flex flex-col hover:border-accent hover:-translate-y-1 transition-all reveal">
+      <div class="flex gap-1 mb-5">{% for i in "12345" %}<span class="text-xl text-accent">★</span>{% endfor %}</div>
+      <p class="text-muted text-sm leading-relaxed flex-1">"Ordered custom subwoofer enclosures for our venue. The build quality, finish, and acoustic performance exceeded expectations. Pan-India delivery was smooth and fast."</p>
+      <div class="flex items-center gap-4 mt-7 pt-6 border-t border-border">
+        <div class="w-12 h-12 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center text-accent font-display text-xl">V</div>
+        <div><p class="text-white font-semibold text-sm">Vikram Singh</p><p class="text-muted text-xs">Club Owner, Bangalore</p></div>
+      </div>
+    </div>
+
+    {% endfor %}
   </div>
   {% endif %}
 </section>
 
-<section class="bg-accent py-20 reveal">
-  <div class="max-w-4xl mx-auto px-4 text-center text-white">
-    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Become Our Next Happy Client</h2>
-    <p class="text-white/75 mb-9 text-lg">Join hundreds of satisfied professionals who trust GM SOUND for their sound systems.</p>
-    <a href="{% url 'contact' %}" class="inline-block bg-white text-accent font-bold px-9 py-3.5 rounded-full hover:bg-orange-50 transition-colors">Contact Us Today</a>
+<!-- ══ TRUST BADGES ══ -->
+<section class="border-y border-border bg-surface py-16">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="text-center mb-10 reveal">
+      <p class="text-accent text-xs font-bold uppercase tracking-[5px]">Why Clients Trust Us</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 stag">
+      <div class="flex items-start gap-4 bg-card border border-border rounded-2xl p-6">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold text-sm mb-1">Warranty on All Products</h3>
+          <p class="text-muted text-xs leading-relaxed">Every product comes with manufacturer warranty and after-sales support.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 bg-card border border-border rounded-2xl p-6">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold text-sm mb-1">On-Time Every Time</h3>
+          <p class="text-muted text-xs leading-relaxed">We arrive, setup, and do sound checks well before your event begins — always.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 bg-card border border-border rounded-2xl p-6">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold text-sm mb-1">Expert Technicians</h3>
+          <p class="text-muted text-xs leading-relaxed">All setups handled by trained audio engineers — not just helpers.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 bg-card border border-border rounded-2xl p-6">
+        <div class="w-10 h-10 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold text-sm mb-1">24/7 Support</h3>
+          <p class="text-muted text-xs leading-relaxed">Call us any time before, during, or after your event — we're always reachable.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- ══ CTA ══ -->
+<section class="bg-accent py-20 relative overflow-hidden">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.07) 0%, transparent 60%);"></div>
+  <div class="max-w-4xl mx-auto px-5 text-center relative z-10 reveal">
+    <h2 class="font-display text-[clamp(36px,5vw,64px)] text-white leading-none mb-5">Become Our Next Happy Client</h2>
+    <p class="text-white/75 text-base max-w-lg mx-auto mb-10">Join hundreds of satisfied professionals who trust SB PRO-AUDIO for their sound systems across India.</p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="{% url 'contact' %}" class="inline-flex items-center gap-2 bg-white text-accent font-bold px-9 py-4 rounded-full hover:bg-orange-50 transition-colors">
+        Contact Us Today →
+      </a>
+      <a href="{% url 'products' %}" class="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-9 py-4 rounded-full hover:bg-white/10 transition-colors">
+        Browse Products
+      </a>
+    </div>
+  </div>
+</section>
+
 {% endblock %}
