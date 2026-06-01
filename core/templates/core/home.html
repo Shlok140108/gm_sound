@@ -182,52 +182,192 @@
 <!-- ══════════════════════════════════════════════════
   §4  SERVICES
 ══════════════════════════════════════════════════ -->
-<section id="services" class="py-24 bg-surface border-y border-border">
-  <div class="max-w-7xl mx-auto px-5">
+<section id="services" class="py-24 bg-surface border-y border-border overflow-hidden">
 
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 reveal">
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 reveal">
       <div>
         <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">Our Services</p>
         <h2 class="font-display text-[clamp(40px,5vw,72px)] text-white leading-none">Professional DJ, Sound<br>&amp; Lighting for Every Event</h2>
       </div>
-      <p class="text-muted text-sm max-w-sm leading-relaxed">From weddings and corporate events to concerts and private parties — complete professional event production.</p>
+      <div class="flex flex-col items-start md:items-end gap-5">
+        <p class="text-muted text-sm max-w-sm leading-relaxed">From weddings and corporate events to concerts and private parties — complete professional event production.</p>
+        <!-- Nav arrows -->
+        <div class="flex items-center gap-3">
+          <button id="svc-prev" aria-label="Previous"
+            class="w-11 h-11 rounded-full border border-border flex items-center justify-center text-muted hover:border-accent hover:text-accent transition-all duration-300 svc-nav-btn">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div id="svc-dots" class="flex items-center gap-1.5"></div>
+          <button id="svc-next" aria-label="Next"
+            class="w-11 h-11 rounded-full border border-accent bg-accent/10 flex items-center justify-center text-accent hover:bg-accent hover:text-white transition-all duration-300 svc-nav-btn">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 stag">
+  <!-- Carousel track — bleeds edge-to-edge -->
+  <div class="relative">
+    <!-- Fade edges -->
+    <div class="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10" style="background:linear-gradient(to right, var(--color-surface,#111), transparent)"></div>
+    <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10" style="background:linear-gradient(to left, var(--color-surface,#111), transparent)"></div>
+
+    <div id="svc-track" class="flex gap-5 transition-transform duration-500 ease-[cubic-bezier(.25,.46,.45,.94)] pl-[max(1.25rem,calc((100vw-80rem)/2))]"
+         style="will-change:transform;">
       {% for svc in services %}
-      <div class="svc-card bg-card border border-border rounded-2xl overflow-hidden group hover:border-accent transition-colors duration-300">
+      <div class="svc-carousel-card flex-shrink-0 w-[320px] md:w-[360px] bg-card border border-border rounded-2xl overflow-hidden group cursor-pointer"
+           style="transition: border-color .3s, box-shadow .3s, transform .4s cubic-bezier(.25,.46,.45,.94);">
+        <!-- Image -->
         {% if svc.image %}
-        <div class="h-48 overflow-hidden">
-          <img src="{{ svc.image.url }}" alt="{{ svc.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        <div class="h-52 overflow-hidden relative">
+          <img src="{{ svc.image.url }}" alt="{{ svc.title }}"
+               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+          <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(10,10,10,.7) 0%, transparent 55%)"></div>
+          <span class="absolute bottom-4 left-5 font-display text-5xl font-bold text-white/10 select-none leading-none">0{{ forloop.counter }}</span>
         </div>
         {% else %}
-        <div class="h-48 bg-dark flex items-center justify-center" style="background:radial-gradient(ellipse at center, rgba(255,87,34,0.06) 0%, transparent 70%);">
-          <svg class="w-12 h-12 text-accent opacity-40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+        <div class="h-52 relative flex items-center justify-center" style="background:radial-gradient(ellipse at 40% 60%, rgba(232,70,10,0.12) 0%, transparent 70%), #0d0d0d;">
+          <svg class="w-16 h-16 text-accent opacity-25" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          <span class="absolute bottom-4 left-5 font-display text-5xl font-bold text-white/10 select-none leading-none">0{{ forloop.counter }}</span>
         </div>
         {% endif %}
-        <div class="p-6">
-          <span class="text-accent text-xs font-bold uppercase tracking-wider">0{{ forloop.counter }}</span>
-          <h3 class="font-display text-2xl text-white mt-2 mb-2 group-hover:text-accent transition-colors">{{ svc.title }}</h3>
-          <p class="text-muted text-sm leading-relaxed mb-4">{{ svc.description|truncatewords:18 }}</p>
+
+        <!-- Body -->
+        <div class="p-7 flex flex-col gap-3">
+          <span class="text-accent text-[10px] font-bold uppercase tracking-[3px]">Service 0{{ forloop.counter }}</span>
+          <h3 class="font-display text-2xl text-white group-hover:text-accent transition-colors duration-300">{{ svc.title }}</h3>
+          <p class="text-muted text-sm leading-relaxed flex-1">{{ svc.description|truncatewords:20 }}</p>
           <a href="#contact"
-             class="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider hover:gap-4 transition-all">
+             class="svc-cta mt-2 inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider group-hover:gap-4 transition-all duration-300">
             Get a Quote
             <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
         </div>
+
+        <!-- Bottom accent line -->
+        <div class="h-px mx-7 mb-0 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
       </div>
       {% empty %}
       {% for title, desc in service_defaults %}
-      <div class="svc-card bg-card border border-border rounded-2xl p-6 group hover:border-accent transition-colors">
-        <span class="text-accent text-xs font-bold uppercase tracking-wider">0{{ forloop.counter }}</span>
-        <h3 class="font-display text-2xl text-white mt-2 mb-2">{{ title }}</h3>
-        <p class="text-muted text-sm leading-relaxed">{{ desc }}</p>
+      <div class="svc-carousel-card flex-shrink-0 w-[320px] md:w-[360px] bg-card border border-border rounded-2xl overflow-hidden group cursor-pointer"
+           style="transition: border-color .3s, box-shadow .3s, transform .4s cubic-bezier(.25,.46,.45,.94);">
+        <div class="h-52 relative flex items-center justify-center" style="background:radial-gradient(ellipse at 40% 60%, rgba(232,70,10,0.12) 0%, transparent 70%), #0d0d0d;">
+          <svg class="w-16 h-16 text-accent opacity-25" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          <span class="absolute bottom-4 left-5 font-display text-5xl font-bold text-white/10 select-none leading-none">0{{ forloop.counter }}</span>
+        </div>
+        <div class="p-7 flex flex-col gap-3">
+          <span class="text-accent text-[10px] font-bold uppercase tracking-[3px]">Service 0{{ forloop.counter }}</span>
+          <h3 class="font-display text-2xl text-white group-hover:text-accent transition-colors duration-300">{{ title }}</h3>
+          <p class="text-muted text-sm leading-relaxed">{{ desc }}</p>
+        </div>
+        <div class="h-px mx-7 mb-0 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
       </div>
       {% endfor %}
       {% endfor %}
+
+      <!-- Spacer so last card isn't flush to right edge -->
+      <div class="flex-shrink-0 w-5"></div>
     </div>
   </div>
+
+  <!-- View all link -->
+  <div class="max-w-7xl mx-auto px-5 mt-10 reveal">
+    <a href="{% url 'services' %}" class="inline-flex items-center gap-2 text-muted hover:text-accent text-sm font-semibold transition-colors group">
+      View all services
+      <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </a>
+  </div>
 </section>
+
+<style>
+  .svc-carousel-card:hover {
+    border-color: rgba(232,70,10,0.5);
+    box-shadow: 0 20px 60px rgba(232,70,10,0.08), 0 4px 20px rgba(0,0,0,0.4);
+    transform: translateY(-4px);
+  }
+  .svc-carousel-card.is-active {
+    border-color: rgba(232,70,10,0.35);
+  }
+  #svc-dots .dot {
+    width: 6px; height: 6px; border-radius: 9999px;
+    background: var(--color-border, #333);
+    transition: background .3s, width .3s;
+    cursor: pointer;
+  }
+  #svc-dots .dot.active {
+    background: #E8460A;
+    width: 20px;
+  }
+</style>
+
+<script>
+(function() {
+  const track   = document.getElementById('svc-track');
+  const prevBtn = document.getElementById('svc-prev');
+  const nextBtn = document.getElementById('svc-next');
+  const dotsEl  = document.getElementById('svc-dots');
+  if (!track) return;
+
+  const cards   = Array.from(track.querySelectorAll('.svc-carousel-card'));
+  const total   = cards.length;
+  if (total === 0) return;
+
+  let current = 0;
+  const CARD_W = () => cards[0].offsetWidth + 20; // width + gap
+
+  /* Build dots */
+  cards.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Go to service ' + (i+1));
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, total - 1));
+    const offset = CARD_W() * current;
+    track.style.transform = `translateX(-${offset}px)`;
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    cards.forEach((c, i) => c.classList.toggle('is-active', i === current));
+    prevBtn.style.opacity = current === 0 ? '.35' : '1';
+    prevBtn.style.pointerEvents = current === 0 ? 'none' : '';
+    nextBtn.style.opacity = current >= total - 1 ? '.35' : '1';
+    nextBtn.style.pointerEvents = current >= total - 1 ? 'none' : '';
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  /* Drag / swipe */
+  let startX = 0, isDragging = false, startCurrent = 0;
+  track.addEventListener('pointerdown', e => { startX = e.clientX; isDragging = true; startCurrent = current; track.setPointerCapture(e.pointerId); });
+  track.addEventListener('pointermove', e => {
+    if (!isDragging) return;
+    const delta = e.clientX - startX;
+    const offset = CARD_W() * current - delta;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-${offset}px)`;
+  });
+  track.addEventListener('pointerup', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = '';
+    const delta = e.clientX - startX;
+    if (Math.abs(delta) > 60) goTo(delta < 0 ? current + 1 : current - 1);
+    else goTo(current);
+  });
+
+  /* Auto-play */
+  let timer = setInterval(() => goTo((current + 1) % total), 4000);
+  track.addEventListener('pointerdown', () => clearInterval(timer));
+
+  goTo(0);
+})();
+</script>
 
 <!-- ══════════════════════════════════════════════════
   §5  FEATURED PRODUCTS
