@@ -57,6 +57,18 @@ class HomeContent(models.Model):
         default="Pan India"
     )
 
+    # Services Section
+    services_heading = models.CharField(
+        max_length=200,
+        default="Professional DJ, Sound & Lighting for Every Event",
+        help_text="Big heading shown above the services carousel on the homepage"
+    )
+    services_subtext = models.CharField(
+        max_length=300,
+        default="From weddings and corporate events to concerts and private parties — complete professional event production.",
+        help_text="Short description shown beside the services heading"
+    )
+
     # About Page
 
     mission = models.TextField()

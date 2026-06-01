@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}{% if site_settings %}{{ site_settings.site_name }}{% else %}SB PRO-AUDIO{% endif %} — Professional Sound Systems{% endblock %}
+{% block title %}{% if site_settings %}{{ site_settings.site_name }}{% else %}GM AUDIO{% endif %} — Professional Sound Systems{% endblock %}
 
 {% block content %}
 
@@ -127,7 +127,7 @@
       <div class="reveal-l relative">
         <div class="relative rounded-2xl overflow-hidden aspect-[4/5]">
           {% if slides %}
-          <img src="{{ slides.0.image.url }}" alt="About SB PRO-AUDIO" class="w-full h-full object-cover">
+          <img src="{{ slides.0.image.url }}" alt="About GM AUDIO" class="w-full h-full object-cover">
           {% else %}
           <div class="w-full h-full bg-card flex items-center justify-center">
             <svg class="w-24 h-24 opacity-10" fill="none" stroke="#FF5722" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
@@ -189,10 +189,10 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 reveal">
       <div>
         <p class="text-accent text-xs font-bold uppercase tracking-[5px] mb-4">Our Services</p>
-        <h2 class="font-display text-[clamp(40px,5vw,72px)] text-white leading-none">Professional DJ, Sound<br>&amp; Lighting for Every Event</h2>
+        <h2 class="font-display text-[clamp(40px,5vw,72px)] text-white leading-none">{{ content.services_heading|default:"Professional DJ, Sound & Lighting for Every Event"|linebreaksbr }}</h2>
       </div>
       <div class="flex flex-col items-start md:items-end gap-5">
-        <p class="text-muted text-sm max-w-sm leading-relaxed">From weddings and corporate events to concerts and private parties — complete professional event production.</p>
+        <p class="text-muted text-sm max-w-sm leading-relaxed">{{ content.services_subtext|default:"From weddings and corporate events to concerts and private parties — complete professional event production." }}</p>
         <!-- Nav arrows -->
         <div class="flex items-center gap-3">
           <button id="svc-prev" aria-label="Previous"

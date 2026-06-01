@@ -34,6 +34,22 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(HomeContent)
 class HomeContentAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('About Section', {
+            'fields': ('about_title', 'about_description'),
+        }),
+        ('Stats Bar', {
+            'fields': ('products_sold', 'happy_clients', 'delivery_area'),
+        }),
+        ('Services Section', {
+            'fields': ('services_heading', 'services_subtext'),
+            'description': 'Controls the headline and description above the services carousel on the homepage.',
+        }),
+        ('About Page Content', {
+            'fields': ('mission', 'vision', 'company_description'),
+            'classes': ('collapse',),
+        }),
+    )
 
     def has_add_permission(self, request):
         return not HomeContent.objects.exists()
@@ -79,8 +95,32 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'order', 'is_active')
+    list_display = ('thumbnail', 'title', 'order', 'is_active')
     list_editable = ('order', 'is_active')
+    list_display_links = ('thumbnail', 'title')
+    ordering = ('order',)
+    fieldsets = (
+        ('Service Details', {
+            'fields': ('title', 'description', 'order', 'is_active'),
+        }),
+        ('Image', {
+            'fields': ('image',),
+            'description': 'Upload a high-quality image (recommended: 800×600px or wider, landscape).',
+        }),
+    )
+
+    def thumbnail(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="height:52px;width:80px;object-fit:cover;border-radius:6px;">',
+                obj.image.url
+            )
+        return format_html(
+            '<div style="height:52px;width:80px;background:#1a1a1a;border-radius:6px;'
+            'display:flex;align-items:center;justify-content:center;'
+            'color:#555;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">No img</div>'
+        )
+    thumbnail.short_description = ''
 
 
 @admin.register(WhyChooseUs)
